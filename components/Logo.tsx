@@ -6,7 +6,10 @@ const Logo: React.FC<{ className?: string, style?: React.CSSProperties }> = ({ c
   const { data } = useData();
   const { logo, companyName } = data.general;
 
-  const logoUrl = logo;
+  // Oprava cesty pro GitHub Pages: pokud cesta začíná / a není to externí URL, přidáme base URL
+  const logoUrl = (logo?.startsWith('/') && !logo.startsWith('http'))
+    ? `${import.meta.env.BASE_URL.replace(/\/$/, '')}${logo}`
+    : logo;
 
   if (logoUrl) {
     return (
