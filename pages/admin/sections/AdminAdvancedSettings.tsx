@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { AdminSectionProps } from '../AdminDashboard';
-import { PageSEO } from '../../../types';
+import { PageSEO, SiteData } from '../../../types';
 import AdminFormField from '../../../components/admin/AdminFormField';
 import ImageUploader from '../../../components/admin/ImageUploader';
 import JSZip from 'jszip';
@@ -9,7 +9,7 @@ import { useAuth } from '../../../context/AuthContext';
 import AdminAppearanceSettings from './AdminAppearanceSettings';
 
 // NEW: Settings Tab Definition
-type SettingsTab = 'global' | 'appearance' | 'seo' | 'security' | 'system';
+type SettingsTab = 'global' | 'appearance' | 'seo' | 'security' | 'system' | 'integrations';
 
 // --- SHARED COMPONENTS ---
 
@@ -406,6 +406,119 @@ const SystemTab: React.FC<AdminSectionProps> = ({ data, showToast }) => {
     );
 };
 
+const IntegrationsTab: React.FC<AdminSectionProps> = ({ data, setData }) => {
+    // Initialize email config if missing (backward compatibility)
+    React.useEffect(() => {
+        if (!data.integrations.email) {
+            setData((prev: SiteData) => prev ? {
+                ...prev,
+                integrations: {
+                    ...prev.integrations,
+                    email: {
+                        enabled: true,
+                        provider: 'emailjs',
+                        config: {
+                            serviceId: '',
+                            templateId: '',
+                            publicKey: '',
+                            notificationEmail: 'slavik-petr@seznam.cz'
+                        }
+                    }
+                }
+            } : null);
+        }
+    }, []);
+
+    if (!data.integrations.email) {
+        return <div>Inicializace integrací...</div>;
+    }
+
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setData((prev: SiteData) => prev ? {
+            ...prev,
+            integrations: {
+                ...prev.integrations,
+                email: {
+                    ...prev.integrations.email,
+                    config: {
+                        ...prev.integrations.email.config,
+                        [name]: value
+                    }
+                }
+            }
+        } : null);
+    };
+
+    const toggleEmail = () => {
+        setData((prev: SiteData) => prev ? {
+            ...prev,
+            integrations: {
+                ...prev.integrations,
+                email: {
+                    ...prev.integrations.email,
+                    enabled: !prev.integrations.email.enabled
+                }
+            }
+        } : null);
+    };
+
+    const tabs = [{ id: 'email', label: 'Email (EmailJS)' }];
+
+    return (
+        <div>
+            <InternalTabs tabs={tabs} activeTab="email" onTabChange={() => { }} />
+
+            <SettingCard title="Konfigurace odesílání emailů">
+                <div className="space-y-8">
+                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-surface-dark/5">
+                        <div className="flex items-center gap-4">
+                            <div className={`w-3 h-3 rounded-full ${data.integrations.email.enabled ? 'bg-green-500 shadow-lg shadow-green-500/50' : 'bg-gray-300'}`}></div>
+                            <div>
+                                <h4 className="font-bold text-surface-dark text-sm uppercase tracking-wide">Aktivovat odesílání</h4>
+                                <p className="text-xs text-surface-dark/60">Povolí odesílání formulářů přes EmailJS</p>
+                            </div>
+                        </div>
+                        <button
+                            onClick={toggleEmail}
+                            className={`w-12 h-7 rounded-full transition-colors relative ${data.integrations.email.enabled ? 'bg-neon-blaze' : 'bg-gray-200'}`}
+                        >
+                            <div className={`w-5 h-5 bg-white rounded-full shadow-md absolute top-1 transition-all ${data.integrations.email.enabled ? 'left-6' : 'left-1'}`}></div>
+                        </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <AdminFormField label="Service ID" htmlFor="serviceId" description="ID služby z EmailJS dashboardu">
+                            <input type="text" id="serviceId" name="serviceId" value={data.integrations.email.config.serviceId} onChange={handleEmailChange} className={baseInputClasses} placeholder="service_xxxxxx" />
+                        </AdminFormField>
+                        <AdminFormField label="Template ID" htmlFor="templateId" description="ID šablony z EmailJS">
+                            <input type="text" id="templateId" name="templateId" value={data.integrations.email.config.templateId} onChange={handleEmailChange} className={baseInputClasses} placeholder="template_xxxxxx" />
+                        </AdminFormField>
+                        <AdminFormField label="Public Key" htmlFor="publicKey" description="Váš veřejný API klíč">
+                            <input type="password" id="publicKey" name="publicKey" value={data.integrations.email.config.publicKey} onChange={handleEmailChange} className={baseInputClasses} placeholder="*********" />
+                        </AdminFormField>
+                        <AdminFormField label="Notifikační Email" htmlFor="notificationEmail" description="Email, kam budou chodit poptávky">
+                            <input type="email" id="notificationEmail" name="notificationEmail" value={data.integrations.email.config.notificationEmail} onChange={handleEmailChange} className={baseInputClasses} placeholder="email@example.com" />
+                        </AdminFormField>
+                        <AdminFormField label="Email pro obnovu hesla" htmlFor="recoveryEmail" description="Na tento email bude zasláno nové heslo při obnově">
+                            <input type="email" id="recoveryEmail" name="recoveryEmail" value={data.integrations.email.config.recoveryEmail} onChange={handleEmailChange} className={baseInputClasses} placeholder="email@example.com" />
+                        </AdminFormField>
+                    </div>
+
+                    <div className="p-4 bg-blue-50 border border-blue-100 rounded-2xl text-blue-800 text-sm">
+                        <p className="font-bold mb-2">Jak nastavit šablonu v EmailJS:</p>
+                        <ul className="list-disc list-inside space-y-1 text-xs opacity-80">
+                            <li>Vytvořte novou šablonu v sekci "Email Templates".</li>
+                            <li>Použijte tyto proměnné: <code>{'{{to_email}}'}</code>, <code>{'{{reply_to}}'}</code>, <code>{'{{message}}'}</code>, <code>{'{{from_name}}'}</code>, <code>{'{{phone}}'}</code>, <code>{'{{services}}'}</code>.</li>
+                            <li>Pro automatickou odpověď klientovi zapněte v nastavení šablony "Auto-Reply" nebo vytvořte druhou šablonu.</li>
+                        </ul>
+                    </div>
+                </div>
+            </SettingCard>
+        </div>
+    );
+};
+
 // --- MAIN COMPONENT ---
 
 const AdminSettings: React.FC<AdminSectionProps> = (props) => {
@@ -418,6 +531,7 @@ const AdminSettings: React.FC<AdminSectionProps> = (props) => {
             case 'seo': return <SeoTab {...props} />;
             case 'security': return <SecurityTab {...props} />;
             case 'system': return <SystemTab {...props} />;
+            case 'integrations': return <IntegrationsTab {...props} />;
             default: return null;
         }
     };
@@ -447,6 +561,11 @@ const AdminSettings: React.FC<AdminSectionProps> = (props) => {
             id: 'system',
             label: 'Systém',
             icon: <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" /></svg>
+        },
+        {
+            id: 'integrations',
+            label: 'Integrace',
+            icon: <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" /></svg>
         },
     ];
 

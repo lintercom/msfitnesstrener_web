@@ -297,6 +297,17 @@ export const initialData: SiteData = {
   integrations: {
     headScripts: '',
     bodyScripts: '',
+    email: {
+      enabled: true,
+      provider: 'emailjs',
+      config: {
+        serviceId: 'service_2m1lsn8',
+        templateId: 'template_cxbqppi',
+        publicKey: 'oH75QBxPioG8wjGwj',
+        notificationEmail: 'slavik-petr@seznam.cz',
+        recoveryEmail: 'slavik-petr@seznam.cz'
+      }
+    }
   },
   localization: {
     defaultLang: 'cs',

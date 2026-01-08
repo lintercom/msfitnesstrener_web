@@ -42,7 +42,7 @@ const App: React.FC = () => {
   return (
     <DataProvider>
       <AuthProvider>
-        <ReactRouterDom.HashRouter>
+        <ReactRouterDom.BrowserRouter>
           <ScrollToTop />
           <ReactRouterDom.Routes>
             {/* HLAVNÍ VEŘEJNÝ WEB - HomePage je indexem pro "/" */}
@@ -53,24 +53,24 @@ const App: React.FC = () => {
               <ReactRouterDom.Route path="objednat" element={<OrderPage />} />
               <ReactRouterDom.Route path="o-mne" element={<AboutMePage />} />
             </ReactRouterDom.Route>
-            
+
             {/* ADMINISTRACE - Pouze na cestě /admin */}
             <ReactRouterDom.Route path="/admin" element={<LoginPage />} />
-            
+
             {/* CHRÁNĚNÝ DASHBOARD - Pouze po přihlášení */}
-            <ReactRouterDom.Route 
-              path="/admin/dashboard" 
+            <ReactRouterDom.Route
+              path="/admin/dashboard"
               element={
                 <AdminProtectedRoute>
                   <AdminDashboard />
                 </AdminProtectedRoute>
-              } 
+              }
             />
 
             {/* CATCH-ALL PRO 404 */}
             <ReactRouterDom.Route path="*" element={<NotFoundPage />} />
           </ReactRouterDom.Routes>
-        </ReactRouterDom.HashRouter>
+        </ReactRouterDom.BrowserRouter>
       </AuthProvider>
     </DataProvider>
   );

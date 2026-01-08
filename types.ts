@@ -202,6 +202,18 @@ export interface SeoSettings {
 export interface IntegrationsSettings {
   headScripts: string;
   bodyScripts: string;
+  email: {
+    enabled: boolean;
+    provider: 'emailjs';
+    config: {
+      serviceId: string;
+      templateId: string;
+      publicKey: string;
+      notificationEmail: string;
+      resetTemplateId?: string;
+      recoveryEmail: string;
+    }
+  };
 }
 
 export interface LocalizationSettings {
