@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
           {/* Column 1: Brand */}
           <div className="flex flex-col items-center sm:items-start space-y-8">
             <div className="flex flex-col gap-4">
-              <Logo variant="light" className="h-20 lg:h-24 w-auto" style={{ transform: `scale(${(data.general.logoScale || 100) / 100})`, transformOrigin: 'center' }} />
+              <Logo className="h-20 lg:h-24 w-auto" style={{ transform: `scale(${(data.general.logoScale || 100) / 100})`, transformOrigin: 'center' }} />
             </div>
           </div>
 
@@ -121,10 +121,10 @@ const Footer: React.FC = () => {
             <p className="whitespace-nowrap">{data.general.copyright}</p>
 
             <span className="hidden md:block w-1 h-1 bg-white/10 rounded-full"></span>
-            <span className="hover:text-white transition-colors cursor-pointer whitespace-nowrap">Ochrana soukromí</span>
+            <ReactRouterDom.Link to="/ochrana-soukromi" className="hover:text-white transition-colors whitespace-nowrap">Ochrana soukromí</ReactRouterDom.Link>
 
             <span className="hidden md:block w-1 h-1 bg-white/10 rounded-full"></span>
-            <span className="hover:text-white transition-colors cursor-pointer whitespace-nowrap">Podmínky spolupráce</span>
+            <ReactRouterDom.Link to="/obchodni-podminky" className="hover:text-white transition-colors whitespace-nowrap">Obchodní podmínky</ReactRouterDom.Link>
 
             <span className="hidden md:block w-1 h-1 bg-white/10 rounded-full"></span>
             <ReactRouterDom.Link to="/admin" className="hover:text-white transition-colors whitespace-nowrap">Admin Hub Access</ReactRouterDom.Link>

@@ -9,7 +9,7 @@ import { useAuth } from '../../../context/AuthContext';
 import AdminAppearanceSettings from './AdminAppearanceSettings';
 
 // NEW: Settings Tab Definition
-type SettingsTab = 'global' | 'appearance' | 'seo' | 'security' | 'system' | 'integrations';
+type SettingsTab = 'global' | 'appearance' | 'seo' | 'security' | 'system' | 'integrations' | 'legal';
 
 // --- SHARED COMPONENTS ---
 
@@ -126,15 +126,9 @@ const GlobalTab: React.FC<AdminSectionProps> = ({ data, setData, showToast }) =>
                 <SettingCard title="Loga & Grafika">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <ImageUploader
-                            label="Logo (Světlé - pro tmavé pozadí)"
-                            imageUrl={data.general.logo.light}
-                            onImageChange={(url) => setData(prev => prev ? { ...prev, general: { ...prev.general, logo: { ...prev.general.logo, light: url || '' } } } : null)}
-                            showToast={showToast}
-                        />
-                        <ImageUploader
-                            label="Logo (Tmavé - pro světlé pozadí)"
-                            imageUrl={data.general.logo.dark}
-                            onImageChange={(url) => setData(prev => prev ? { ...prev, general: { ...prev.general, logo: { ...prev.general.logo, dark: url || '' } } } : null)}
+                            label="Logo Projektu"
+                            imageUrl={data.general.logo}
+                            onImageChange={(url) => setData(prev => prev ? { ...prev, general: { ...prev.general, logo: url || '' } } : null)}
                             showToast={showToast}
                         />
                         <AdminFormField label="Velikost loga (%)" htmlFor="logoScale">
@@ -238,20 +232,29 @@ const SecurityTab: React.FC<AdminSectionProps> = ({ showToast }) => {
     );
 };
 
-const SeoTab: React.FC<AdminSectionProps> = ({ data, setData }) => {
+const SeoTab: React.FC<AdminSectionProps> = ({ data, setData, showToast }) => {
     const [activePage, setActivePage] = useState('home');
 
     const SEO_PAGES = [
         { key: 'home', name: 'Domů' },
         { key: 'services', name: 'Služby' },
         { key: 'gallery', name: 'Coaching' },
+        { key: 'blog', name: 'Blog' },
         { key: 'aboutMe', name: 'O mně' },
+        { key: 'order', name: 'Objednávka' },
     ] as const;
 
-    const handleSeoChange = (page: any, field: keyof PageSEO, value: string) => {
+    const handleSeoChange = (page: string, field: string, value: string) => {
         setData(prev => prev ? {
             ...prev,
             seo: { ...prev.seo, [page]: { ...prev.seo[page], [field]: value } }
+        } : null);
+    };
+
+    const handleGlobalChange = (field: string, value: string) => {
+        setData(prev => prev ? {
+            ...prev,
+            seo: { ...prev.seo, [field]: value }
         } : null);
     };
 
@@ -259,21 +262,141 @@ const SeoTab: React.FC<AdminSectionProps> = ({ data, setData }) => {
     const currentPage = SEO_PAGES.find(p => p.key === activePage);
 
     return (
-        <div>
-            <InternalTabs tabs={tabs} activeTab={activePage} onTabChange={setActivePage} />
+        <div className="space-y-12">
+            <SettingCard title="Globální SEO Branding">
+                <div className="space-y-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <AdminFormField label="Název projektu (Site Name)" htmlFor="site-name" description="Použije se v titulku všech stránek (např. Martin Šťastný).">
+                            <input type="text" id="site-name" value={data.seo.siteName} onChange={(e) => handleGlobalChange('siteName', e.target.value)} className={baseInputClasses} />
+                        </AdminFormField>
+                        <AdminFormField label="Oddělovač titulku" htmlFor="title-sep" description="Znak mezi názvem stránky a názvem projektu (např. | nebo -).">
+                            <input type="text" id="title-sep" value={data.seo.titleSeparator} onChange={(e) => handleGlobalChange('titleSeparator', e.target.value)} className={baseInputClasses} />
+                        </AdminFormField>
+                    </div>
+                    <AdminFormField label="Globální klíčová slova" htmlFor="global-keywords" description="Slova, která se použijí, pokud stránka nemá vlastní.">
+                        <input type="text" id="global-keywords" value={data.seo.globalKeywords} onChange={(e) => handleGlobalChange('globalKeywords', e.target.value)} className={baseInputClasses} />
+                    </AdminFormField>
+
+                    <AdminFormField label="Výchozí OG Obrázek (1200x630px)" htmlFor="og-image" description="Náhledový obrázek při sdílení na sociálních sítích.">
+                        <ImageUploader
+                            image={data.seo.ogImage}
+                            onImageChange={(img) => handleGlobalChange('ogImage', img)}
+                            aspectRatio="1200/630"
+                        />
+                    </AdminFormField>
+                </div>
+            </SettingCard>
+
+            <div className="pt-8 border-t border-surface-dark/5">
+                <h3 className="text-sm font-black uppercase tracking-[.4em] text-surface-dark/40 mb-8 px-4">Nastavení jednotlivých stránek</h3>
+                <InternalTabs tabs={tabs} activeTab={activePage} onTabChange={setActivePage} />
+            </div>
 
             {currentPage && (
-                <SettingCard title={`SEO: ${currentPage.name}`}>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        <AdminFormField label="Titulek (Title)" htmlFor={`seo-title-${activePage}`} description="Zobrazí se v záložce prohlížeče a ve vyhledávání.">
-                            <input type="text" id={`seo-title-${activePage}`} value={data.seo[activePage].title} onChange={(e) => handleSeoChange(activePage, 'title', e.target.value)} className={baseInputClasses} />
-                        </AdminFormField>
-                        <AdminFormField label="Popis (Description)" htmlFor={`seo-desc-${activePage}`} description="Krátký popis stránky pro vyhledávače (cca 160 znaků).">
-                            <textarea id={`seo-desc-${activePage}`} value={data.seo[activePage].description} onChange={(e) => handleSeoChange(activePage, 'description', e.target.value)} className={baseInputClasses} rows={4}></textarea>
-                        </AdminFormField>
+                <SettingCard title={`Nastavení: ${currentPage.name}`}>
+                    <div className="space-y-12">
+                        {/* Basic Meta */}
+                        <div className="space-y-8">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                <AdminFormField label="Meta Titulek (Title)" htmlFor={`seo-title-${activePage}`} description="Zobrazí se ve vyhledávání.">
+                                    <input type="text" id={`seo-title-${activePage}`} value={data.seo[activePage].title} onChange={(e) => handleSeoChange(activePage, 'title', e.target.value)} className={baseInputClasses} />
+                                </AdminFormField>
+                                <AdminFormField label="Klíčová slova (Keywords)" htmlFor={`seo-keywords-${activePage}`} description="Vlastní slova pro tuto stránku.">
+                                    <input type="text" id={`seo-keywords-${activePage}`} value={data.seo[activePage].keywords || ''} onChange={(e) => handleSeoChange(activePage, 'keywords', e.target.value)} className={baseInputClasses} />
+                                </AdminFormField>
+                            </div>
+                            <AdminFormField label="Meta Popis (Description)" htmlFor={`seo-desc-${activePage}`} description="Popis pro vyhledávače (cca 160 znaků).">
+                                <textarea id={`seo-desc-${activePage}`} value={data.seo[activePage].description} onChange={(e) => handleSeoChange(activePage, 'description', e.target.value)} className={baseInputClasses} rows={4}></textarea>
+                            </AdminFormField>
+                        </div>
+
+                        {/* OG Meta */}
+                        <div className="pt-12 border-t border-surface-dark/5 space-y-8">
+                            <h4 className="text-xs font-black uppercase tracking-widest text-surface-dark/60 italic">Pokročilé Open Graph (Sociální sítě)</h4>
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                <AdminFormField label="OG Titulek" htmlFor={`seo-ogtitle-${activePage}`} description="Pokud se má lišit od Meta Titulku.">
+                                    <input type="text" id={`seo-ogtitle-${activePage}`} value={data.seo[activePage].ogTitle || ''} onChange={(e) => handleSeoChange(activePage, 'ogTitle', e.target.value)} className={baseInputClasses} />
+                                </AdminFormField>
+                                <AdminFormField label="OG Popis" htmlFor={`seo-ogdesc-${activePage}`} description="Pokud se má lišit od Meta Popisu.">
+                                    <textarea id={`seo-ogdesc-${activePage}`} value={data.seo[activePage].ogDescription || ''} onChange={(e) => handleSeoChange(activePage, 'ogDescription', e.target.value)} className={baseInputClasses} rows={3}></textarea>
+                                </AdminFormField>
+                            </div>
+                        </div>
                     </div>
                 </SettingCard>
             )}
+        </div>
+    );
+};
+
+const LegalTab: React.FC<AdminSectionProps> = ({ data, setData }) => {
+    React.useEffect(() => {
+        if (!data.legal) {
+            setData(prev => prev ? {
+                ...prev,
+                legal: {
+                    cookieConsent: {
+                        enabled: true,
+                        text: 'Tento web používá soubory cookies k zajištění nejlepšího uživatelského zážitku.',
+                        linkText: 'Více informací',
+                        linkUrl: '/ochrana-soukromi',
+                        buttonText: 'Rozumím'
+                    }
+                }
+            } : null);
+        }
+    }, [data.legal, setData]);
+
+    if (!data.legal) {
+        return <div className="p-8 text-center text-surface-dark/40 uppercase font-black tracking-widest text-xs">Inicializace právních nastavení...</div>;
+    }
+
+    const handleLegalChange = (field: string, value: any) => {
+        setData(prev => prev ? {
+            ...prev,
+            legal: {
+                ...prev.legal,
+                cookieConsent: {
+                    ...prev.legal.cookieConsent,
+                    [field]: value
+                }
+            }
+        } : null);
+    };
+
+    return (
+        <div className="space-y-8">
+            <SettingCard title="Souhlas s Cookies">
+                <div className="space-y-8">
+                    <div className="flex items-center p-5 bg-gray-50 border border-surface-dark/5 rounded-3xl">
+                        <div className="flex-grow">
+                            <h5 className="font-black text-surface-dark uppercase tracking-tight text-sm">Aktivovat Cookie Banner</h5>
+                            <p className="text-xs text-surface-dark/40 uppercase font-bold tracking-widest mt-1">Zobrazit lištu pro souhlas uživatele</p>
+                        </div>
+                        <button
+                            onClick={() => handleLegalChange('enabled', !data.legal.cookieConsent.enabled)}
+                            className={`w-14 h-8 rounded-full transition-all relative ${data.legal.cookieConsent.enabled ? 'bg-neon-blaze shadow-neon-glow' : 'bg-gray-200'}`}
+                        >
+                            <div className={`absolute top-1 w-6 h-6 bg-white rounded-full transition-all ${data.legal.cookieConsent.enabled ? 'left-7' : 'left-1'}`}></div>
+                        </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <AdminFormField label="Text v liště" htmlFor="cookie-text">
+                            <textarea id="cookie-text" value={data.legal.cookieConsent.text} onChange={(e) => handleLegalChange('text', e.target.value)} className={baseInputClasses} rows={3}></textarea>
+                        </AdminFormField>
+                        <AdminFormField label="Text tlačítka" htmlFor="cookie-btn">
+                            <input type="text" id="cookie-btn" value={data.legal.cookieConsent.buttonText} onChange={(e) => handleLegalChange('buttonText', e.target.value)} className={baseInputClasses} />
+                        </AdminFormField>
+                        <AdminFormField label="Text odkazu" htmlFor="cookie-link-text">
+                            <input type="text" id="cookie-link-text" value={data.legal.cookieConsent.linkText} onChange={(e) => handleLegalChange('linkText', e.target.value)} className={baseInputClasses} />
+                        </AdminFormField>
+                        <AdminFormField label="URL odkazu (např. /ochrana-soukromi)" htmlFor="cookie-link-url">
+                            <input type="text" id="cookie-link-url" value={data.legal.cookieConsent.linkUrl} onChange={(e) => handleLegalChange('linkUrl', e.target.value)} className={baseInputClasses} />
+                        </AdminFormField>
+                    </div>
+                </div>
+            </SettingCard>
         </div>
     );
 };
@@ -361,12 +484,75 @@ const SystemTab: React.FC<AdminSectionProps> = ({ data, showToast }) => {
         const link = document.createElement('a');
         link.href = url;
         link.download = `ms-hub-blueprint.json`;
+        document.body.appendChild(link);
         link.click();
-        URL.revokeObjectURL(url);
+
+        // Cleanup with delay to ensure download starts
+        setTimeout(() => {
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }, 100);
+    };
+
+    const generateSitemap = () => {
+        const baseUrl = 'https://martinstastny.cz';
+        const today = new Date().toISOString().split('T')[0];
+
+        let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+        xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+
+        // Static Pages
+        const pages = [
+            { path: '/', priority: '1.0' },
+            { path: '/galerie', priority: '0.8' },
+            { path: '/blog', priority: '0.9' },
+            { path: '/objednat', priority: '0.8' },
+            { path: '/o-mne', priority: '0.7' },
+            { path: '/ochrana-soukromi', priority: '0.3' },
+            { path: '/obchodni-podminky', priority: '0.3' }
+        ];
+
+        pages.forEach(p => {
+            xml += `  <url>\n    <loc>${baseUrl}${p.path}</loc>\n    <lastmod>${today}</lastmod>\n    <priority>${p.priority}</priority>\n  </url>\n`;
+        });
+
+        // Blog Posts
+        data.blog.forEach(post => {
+            let modDate = today;
+            if (post.date && post.date.includes('.')) {
+                const parts = post.date.split('.');
+                if (parts.length === 3) {
+                    modDate = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+                }
+            }
+            xml += `  <url>\n    <loc>${baseUrl}/blog/${post.id}</loc>\n    <lastmod>${modDate}</lastmod>\n    <priority>0.6</priority>\n  </url>\n`;
+        });
+
+        xml += `</urlset>`;
+
+        const zip = new JSZip();
+        zip.file('sitemap.xml', xml);
+
+        zip.generateAsync({ type: 'blob' }).then((blob) => {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'sitemap.zip';
+            document.body.appendChild(link);
+            link.click();
+
+            setTimeout(() => {
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+            }, 100);
+
+            showToast('Sitemap.zip byl vygenerován a stažen.', 'success');
+        });
     };
 
     const tabs = [
         { id: 'backup', label: 'Zálohování' },
+        { id: 'seo', label: 'SEO Indexace' },
         { id: 'assets', label: 'Podklady' }
     ];
     const [activeSubTab, setActiveSubTab] = useState('backup');
@@ -384,6 +570,21 @@ const SystemTab: React.FC<AdminSectionProps> = ({ data, showToast }) => {
                             className="w-full px-6 py-4 bg-surface-dark text-white rounded-full text-[10px] font-black uppercase tracking-[0.3em] hover:neon-gradient transition-all flex items-center justify-center gap-3"
                         >
                             Exportovat (.json)
+                        </button>
+                    </div>
+                </SettingCard>
+            )}
+
+            {activeSubTab === 'seo' && (
+                <SettingCard title="Export vyhledávání">
+                    <div className="space-y-4 max-w-md">
+                        <p className="text-sm text-surface-dark/70 mb-4">Vygenerujte aktuální soubor sitemap.xml pro Google a Seznam.</p>
+                        <button
+                            onClick={generateSitemap}
+                            className="w-full px-6 py-4 bg-surface-dark text-white rounded-full text-[10px] font-black uppercase tracking-[0.3em] hover:neon-gradient transition-all flex items-center justify-center gap-3 shadow-md"
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                            Exportovat Sitemap.xml
                         </button>
                     </div>
                 </SettingCard>
@@ -532,6 +733,7 @@ const AdminSettings: React.FC<AdminSectionProps> = (props) => {
             case 'security': return <SecurityTab {...props} />;
             case 'system': return <SystemTab {...props} />;
             case 'integrations': return <IntegrationsTab {...props} />;
+            case 'legal': return <LegalTab {...props} />;
             default: return null;
         }
     };
@@ -566,6 +768,11 @@ const AdminSettings: React.FC<AdminSectionProps> = (props) => {
             id: 'integrations',
             label: 'Integrace',
             icon: <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" /></svg>
+        },
+        {
+            id: 'legal',
+            label: 'Právní',
+            icon: <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
         },
     ];
 

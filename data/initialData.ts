@@ -16,11 +16,8 @@ const defaultDecoration: SectionDecoration = {
 export const initialData: SiteData = {
   general: {
     companyName: "Martin Šťastný",
-    logo: {
-      light: "/images/logo-light.svg",
-      dark: "/images/logo-dark.svg"
-    },
-    logoScale: 100,
+    logo: "/images/logo.png",
+    logoScale: 130,
     heroImage: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80",
     favicon: "/favicon.ico",
     slogan: "FITNESS COACH",
@@ -98,6 +95,8 @@ export const initialData: SiteData = {
       order: 1,
       fields: [],
       imageUrl: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1470&auto=format&fit=crop',
+      locations: ['Sportcentrum Vizovice', 'Dynamic Fitness Studio Zlín'],
+      prices: [{ label: 'TRÉNINK', price: '600Kč/OSOBA' }]
     },
     {
       id: 's-sportovni-priprava',
@@ -109,16 +108,23 @@ export const initialData: SiteData = {
       order: 2,
       fields: [],
       imageUrl: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=1470&auto=format&fit=crop',
+      locations: ['Sportcentrum Vizovice'],
+      prices: [{ label: 'TRÉNINK', price: '350Kč/OSOBA' }]
     },
     {
       id: 's-zavodni-priprava',
-      title: 'Kondiční trénink',
+      title: 'Závodní příprava',
       description: 'Kondiční a silová příprava pro sportovce, kteří se chystají na Spartan Race, Hyrox nebo kompletní běžecké závody.\nPomohu ti nastavit strukturovranný tréninkový plán, který odpovídá konkrétním nárokům závodu.\n\nDůraz klademe na vytrvalost, sílu, regeneraci a závodní specifika, aby ses postavil na start připravený a s jistotou.\n\n✔ cílená příprava na závody\n✔ systematický trénink\n✔ minimalizace rizika zranění',
       materials: ['Spartan', 'Hyrox', 'Kondice'],
       processSteps: ['Závodní strategie', 'Periodizace', 'Simulace závodu'],
       order: 3,
       fields: [],
       imageUrl: 'https://images.unsplash.com/photo-1524646349956-1590eacfa324?q=80&w=1470&auto=format&fit=crop',
+      locations: ['HappyGym Chrastěšov', 'Sportcentrum Vizovice'],
+      prices: [
+        { label: 'TRÉNINK', price: '700Kč/OSOBA' },
+        { label: 'TRÉNINK', price: '500Kč/STUDENT' }
+      ]
     },
     {
       id: 's-skupinovy-trenink',
@@ -130,6 +136,8 @@ export const initialData: SiteData = {
       order: 4,
       fields: [],
       imageUrl: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1470&auto=format&fit=crop',
+      locations: ['Sportcentrum Vizovice'],
+      prices: [{ label: 'LEKCE', price: '200Kč/OSOBA' }]
     },
     {
       id: 's-kruhovy-trenink',
@@ -141,6 +149,8 @@ export const initialData: SiteData = {
       order: 5,
       fields: [],
       imageUrl: 'https://images.unsplash.com/photo-1434608519344-49d77a699e1d?q=80&w=1474&auto=format&fit=crop',
+      locations: ['Sportcentrum Vizovice'],
+      prices: [{ label: 'TRÉNINK', price: '150Kč/OSOBA' }]
     },
   ],
   gallery: [
@@ -245,11 +255,38 @@ export const initialData: SiteData = {
     { id: 'mat2', name: 'Nutriční timing', description: 'Strategické rozvržení živin pro regeneraci.' }
   ],
   seo: {
-    home: { title: 'Martin Šťastný | Elitní Fitness Coach Vizovice', description: 'Profesionální coaching pro maximální výkonnost a transformaci postavy.' },
-    services: { title: 'Služby | Martin Šťastný', description: 'Tréninkové systémy pro sílu, hubnutí a mobilitu.' },
-    gallery: { title: 'Proces Tréninků | Martin Šťastný', description: 'Skutečné výsledky mých klientů a jejich proměny.' },
-    blog: { title: 'Blog & Vzdělávání | Martin Šťastný', description: 'Vědecké články o fitness, výživě a disciplíně.' },
-    aboutMe: { title: 'O mně | Martin Šťastný', description: 'Pozněte Martina Šťastného - elitního fitness kouče.' },
+    siteName: 'Martin Šťastný',
+    titleSeparator: '|',
+    home: {
+      title: 'Elite Fitness Coaching Vizovice',
+      description: 'Profesionální fitness coaching ve Vizovicích. Osobní tréninky, online coaching a transformace postavy.',
+      keywords: 'fitness, vizovice, coaching, osobní trenér'
+    },
+    services: {
+      title: 'Fitness Služby a Ceník | Martin Šťastný',
+      description: 'Přehled fitness služeb ve Vizovicích a Zlíně - osobní tréninky, skupinové lekce, sportovní příprava mládeže a příprava na závody (Spartan, Hyrox).',
+      keywords: 'ceník fitness, osobní trénink Vizovice, osobní trenér Zlín, skupinové tréninky, sportovní příprava dětí, Spartan Race příprava'
+    },
+    gallery: {
+      title: 'Průběh Spolupráce & Galerie | Martin Šťastný',
+      description: 'Podívejte se, jak probíhá spolupráce a jakých výsledků dosahují moji klienti.',
+      keywords: 'výsledky, transformace, galerie fitness'
+    },
+    blog: {
+      title: 'Fitness Blog & Tipy | Martin Šťastný',
+      description: 'Tipy na trénink, stravu a zdravý životní styl pro vaše maximum.',
+      keywords: 'blog o fitness, tipy na cvičení, zdravá strava'
+    },
+    aboutMe: {
+      title: 'O mně | Martin Šťastný',
+      description: 'Poznejte můj příběh a přístup k fitness coachingu.',
+      keywords: 'o mě, martin šťastný, trenér vizovice'
+    },
+    order: {
+      title: 'Začít Spolupráci | Martin Šťastný',
+      description: 'Vyplňte krátký formulář a začněte svou cestu za lepším já pod vedením Martina Šťastného.',
+      keywords: 'začít trénovat, objednávka trenéra, fitness dotazník'
+    },
     globalKeywords: 'fitness trenér, vizovice, coaching, transformace, síla, hubnutí, blog o fitness',
     ogImage: '',
   },
@@ -313,6 +350,15 @@ export const initialData: SiteData = {
     defaultLang: 'cs',
     dateFormat: 'dd.MM.yyyy',
     multiLanguage: false,
+  },
+  legal: {
+    cookieConsent: {
+      enabled: true,
+      text: 'Tento web používá nezbytné technické a analytické soubory cookies pro zajištění správné funkčnosti a analýzu návštěvnosti.',
+      linkText: 'Zásady ochrany soukromí',
+      linkUrl: '/ochrana-soukromi',
+      buttonText: 'Souhlasím'
+    }
   },
   ai: {
     enabled: true,

@@ -1,5 +1,6 @@
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
+import { compressImage } from '../../utils/imageUtils';
 
 interface ImageUploaderProps {
     label: string;
@@ -11,19 +12,38 @@ interface ImageUploaderProps {
 const ImageUploader: React.FC<ImageUploaderProps> = ({ label, imageUrl, onImageChange, showToast }) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const [isCompressing, setIsCompressing] = useState(false);
+
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
-        if (file.size > 1 * 1024 * 1024) { // 1MB warning
-            showToast(`Soubor ${file.name} je příliš velký (>1MB). Může způsobit problémy s ukládáním.`, 'error');
+        // Increase limit to 5MB for warning, as we will compress it anyway
+        if (file.size > 5 * 1024 * 1024) {
+            showToast(`Soubor ${file.name} je velmi velký. Bude automaticky optimalizován pro web.`, 'success');
         }
 
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            onImageChange(event.target?.result as string);
-        };
-        reader.readAsDataURL(file);
+        setIsCompressing(true);
+        try {
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+                const base64 = event.target?.result as string;
+                try {
+                    // Automatically compress all uploaded images to standard dimensions and quality
+                    const compressed = await compressImage(base64);
+                    onImageChange(compressed);
+                } catch (err) {
+                    console.error("Compression failed", err);
+                    onImageChange(base64); // Fallback to original if compression fails
+                } finally {
+                    setIsCompressing(false);
+                }
+            };
+            reader.readAsDataURL(file);
+        } catch (error) {
+            console.error("File reading failed", error);
+            setIsCompressing(false);
+        }
     };
 
     return (
@@ -45,8 +65,13 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ label, imageUrl, onImageC
                         onChange={handleFileChange}
                         className="hidden"
                     />
-                    <button type="button" onClick={() => fileInputRef.current?.click()} className="px-3 py-1.5 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
-                        Nahrát nový
+                    <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={isCompressing}
+                        className={`px-3 py-1.5 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50`}
+                    >
+                        {isCompressing ? 'Optimalizace...' : 'Nahrát nový'}
                     </button>
                     {imageUrl && (
                         <button type="button" onClick={() => onImageChange(null)} className="px-3 py-1.5 bg-red-50 border border-red-200 text-red-700 rounded-md text-sm font-medium hover:bg-red-100">

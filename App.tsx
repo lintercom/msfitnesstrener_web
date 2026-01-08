@@ -13,6 +13,8 @@ import AboutMePage from './pages/AboutMePage';
 import LoginPage from './pages/LoginPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import NotFoundPage from './pages/NotFoundPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import TermsAndConditionsPage from './pages/TermsAndConditionsPage';
 import MainLayout from './components/layouts/MainLayout';
 
 /**
@@ -52,6 +54,8 @@ const App: React.FC = () => {
               <ReactRouterDom.Route path="blog" element={<BlogPage />} />
               <ReactRouterDom.Route path="objednat" element={<OrderPage />} />
               <ReactRouterDom.Route path="o-mne" element={<AboutMePage />} />
+              <ReactRouterDom.Route path="ochrana-soukromi" element={<PrivacyPolicyPage />} />
+              <ReactRouterDom.Route path="obchodni-podminky" element={<TermsAndConditionsPage />} />
             </ReactRouterDom.Route>
 
             {/* ADMINISTRACE - Pouze na cestě /admin */}

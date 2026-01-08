@@ -75,7 +75,6 @@ const Header: React.FC = () => {
             }} className="flex items-center">
               <Logo
                 className="h-full w-auto object-contain"
-                variant="light"
                 style={{ transform: `scale(${(logoScale || 100) / 100})`, transformOrigin: 'left center' }}
               />
             </div>

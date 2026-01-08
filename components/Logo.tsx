@@ -2,12 +2,11 @@
 import React from 'react';
 import { useData } from '../context/DataProvider';
 
-const Logo: React.FC<{ className?: string, variant?: 'light' | 'dark', style?: React.CSSProperties }> = ({ className, variant = 'dark', style }) => {
+const Logo: React.FC<{ className?: string, style?: React.CSSProperties }> = ({ className, style }) => {
   const { data } = useData();
   const { logo, companyName } = data.general;
 
-  // Select logo based on variant
-  const logoUrl = variant === 'light' ? logo.light : logo.dark;
+  const logoUrl = logo;
 
   if (logoUrl) {
     return (

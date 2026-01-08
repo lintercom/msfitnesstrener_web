@@ -5,6 +5,7 @@ import { useData } from '../context/DataProvider';
 import { PageHero, BlueprintGrid } from '../components/PageDecorations';
 import { Service } from '../types';
 import emailjs from '@emailjs/browser';
+import SEO from '../components/SEO';
 
 type ClientTab = 'new' | 'existing';
 
@@ -128,6 +129,11 @@ const OrderPage: React.FC = () => {
 
     return (
         <div className="bg-background min-h-screen">
+            <SEO
+                title={data.seo.order.title}
+                description={data.seo.order.description}
+                keywords={data.seo.order.keywords}
+            />
             <PageHero
                 titlePart1={data.pageHeroes.order.titlePart1}
                 titlePart2Accent={data.pageHeroes.order.titlePart2Accent}

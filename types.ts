@@ -28,6 +28,8 @@ export interface Service {
   imageScale?: number;
   imageOpacity?: number; // 0-100
   imageRotation?: number; // degrees
+  locations?: string[];
+  prices?: { label: string; price: string }[];
 }
 
 export interface GalleryItem {
@@ -72,6 +74,9 @@ export interface HowWeWorkStep {
 export interface PageSEO {
   title: string;
   description: string;
+  keywords: string;
+  ogTitle?: string;
+  ogDescription?: string;
   link?: {
     text: string;
     path: string;
@@ -127,10 +132,7 @@ export interface SectionDecoration {
 
 export interface GeneralSettings {
   companyName: string;
-  logo: {
-    light: string;
-    dark: string;
-  };
+  logo: string;
   logoScale: number;
   heroImage: string;
   favicon: string;
@@ -190,13 +192,26 @@ export interface AppearanceSettings {
 
 
 export interface SeoSettings {
+  siteName: string;
+  titleSeparator: string;
   home: PageSEO;
   services: PageSEO;
   gallery: PageSEO;
   blog: PageSEO;
   aboutMe: PageSEO;
+  order: PageSEO;
   globalKeywords: string;
   ogImage: string;
+}
+
+export interface LegalSettings {
+  cookieConsent: {
+    enabled: boolean;
+    text: string;
+    linkText: string;
+    linkUrl: string;
+    buttonText: string;
+  };
 }
 
 export interface IntegrationsSettings {
@@ -281,6 +296,7 @@ export interface SiteData {
   appearance: AppearanceSettings;
   integrations: IntegrationsSettings;
   localization: LocalizationSettings;
+  legal: LegalSettings;
   // Added ai property to SiteData
   ai: AISettings;
 }
