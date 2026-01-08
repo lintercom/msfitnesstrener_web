@@ -44,7 +44,7 @@ const App: React.FC = () => {
   return (
     <DataProvider>
       <AuthProvider>
-        <ReactRouterDom.BrowserRouter>
+        <ReactRouterDom.HashRouter>
           <ScrollToTop />
           <ReactRouterDom.Routes>
             {/* HLAVNÍ VEŘEJNÝ WEB - HomePage je indexem pro "/" */}
@@ -74,7 +74,7 @@ const App: React.FC = () => {
             {/* CATCH-ALL PRO 404 */}
             <ReactRouterDom.Route path="*" element={<NotFoundPage />} />
           </ReactRouterDom.Routes>
-        </ReactRouterDom.BrowserRouter>
+        </ReactRouterDom.HashRouter>
       </AuthProvider>
     </DataProvider>
   );
