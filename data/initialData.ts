@@ -29,7 +29,7 @@ export const initialData: SiteData = {
     contactEmail: "info@martinstastny.cz",
     contactPhone: "+420 123 456 789",
     address: "Praha, Česká republika",
-    copyright: "© 2024 Martin Šťastný. Všechna práva vyhrazena.",
+    copyright: "© 2026 Martin Šťastný. Všechna práva vyhrazena.",
     socials: {
       facebook: 'https://www.facebook.com/profile.php?id=61578971855848&sk=about',
       instagram: 'https://www.instagram.com/martin_stastny_fitness_coach?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=='
