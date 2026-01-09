@@ -28,8 +28,6 @@ export interface Service {
   imageScale?: number;
   imageOpacity?: number; // 0-100
   imageRotation?: number; // degrees
-  locations?: string[];
-  prices?: { label: string; price: string }[];
 }
 
 export interface GalleryItem {

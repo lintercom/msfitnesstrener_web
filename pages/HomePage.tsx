@@ -57,38 +57,8 @@ const DetailedServices: React.FC = () => {
     const { data } = useData();
     const services = [...data.services].sort((a, b) => a.order - b.order);
 
-    // JSON-LD structured data for Services
-    const jsonLd = {
-        "@context": "https://schema.org",
-        "@type": "ItemList",
-        "itemListElement": services.map((service, index) => ({
-            "@type": "ListItem",
-            "position": index + 1,
-            "item": {
-                "@type": "Service",
-                "name": service.title,
-                "description": service.description,
-                "provider": {
-                    "@type": "Person",
-                    "name": data.general.companyName
-                },
-                "areaServed": service.locations?.join(', '),
-                "offers": service.prices?.map(p => ({
-                    "@type": "Offer",
-                    "description": p.label,
-                    "price": p.price.replace(/[^0-9]/g, ''),
-                    "priceCurrency": "CZK"
-                }))
-            }
-        }))
-    };
-
     return (
         <section id="sluzby" className="pt-20 pb-20 md:pt-32 md:pb-32 bg-surface relative overflow-hidden scroll-mt-20">
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-            />
             <BlueprintGrid className="opacity-[0.03] grayscale invert" />
 
             <div className="flex flex-col gap-20 md:gap-32 relative z-10">
@@ -139,67 +109,12 @@ const DetailedServices: React.FC = () => {
                                             )}
                                         </h3>
 
-                                        <p className="text-surface-dark/90 font-medium text-sm lg:text-lg leading-relaxed mb-6 md:mb-8 max-w-2xl whitespace-pre-line">
+                                        <p className="text-surface-dark/90 font-medium text-sm lg:text-lg leading-relaxed mb-6 md:mb-10 max-w-2xl whitespace-pre-line">
                                             {service.description}
                                         </p>
-
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-                                            {service.locations && service.locations.length > 0 && (
-                                                <div className="flex flex-col gap-3">
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-5 h-5 rounded-full neon-gradient flex items-center justify-center p-1">
-                                                            <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" className="w-full h-full">
-                                                                <path d="M12 21s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 7.2c0 7.3-8 11.8-8 11.8z" strokeLinecap="round" strokeLinejoin="round" />
-                                                                <circle cx="12" cy="9" r="2.5" />
-                                                            </svg>
-                                                        </div>
-                                                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-surface-dark/60">Kde trénujeme</span>
-                                                    </div>
-                                                    <div className="flex flex-col gap-1">
-                                                        {service.locations.map(loc => (
-                                                            <span key={loc} className="text-xs lg:text-sm font-bold text-surface-dark">{loc}</span>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            )}
-
-                                            {service.prices && service.prices.length > 0 && (
-                                                <div className="flex flex-col gap-3">
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-5 h-5 rounded-full neon-gradient flex items-center justify-center p-1">
-                                                            <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" className="w-full h-full">
-                                                                <circle cx="12" cy="12" r="10" />
-                                                                <path d="M12 6v12M15 9H9M15 15H9" strokeLinecap="round" strokeLinejoin="round" />
-                                                            </svg>
-                                                        </div>
-                                                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-surface-dark/60">Ceník</span>
-                                                    </div>
-                                                    <div className="flex flex-col gap-y-3">
-                                                        {Object.entries(
-                                                            service.prices.reduce((acc, p) => {
-                                                                if (!acc[p.label]) acc[p.label] = [];
-                                                                acc[p.label].push(p.price);
-                                                                return acc;
-                                                            }, {} as Record<string, string[]>)
-                                                        ).map(([label, prices]) => (
-                                                            <div key={label} className="flex gap-2 items-start">
-                                                                <span className="text-[10px] font-black text-surface-dark/50 uppercase tracking-widest pt-1">{label}:</span>
-                                                                <div className="flex flex-col gap-1">
-                                                                    {prices.map((price, pIdx) => (
-                                                                        <span key={pIdx} className="text-xs lg:text-sm font-bold text-surface-dark uppercase tracking-wide">
-                                                                            {price}
-                                                                        </span>
-                                                                    ))}
-                                                                </div>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
                                     </div>
 
-                                    <div className="flex flex-wrap items-center gap-6 md:gap-10 mt-auto pt-6 border-t border-surface-dark/5">
+                                    <div className="flex flex-wrap items-center gap-6 md:gap-10 mt-auto pt-10">
                                         <ReactRouterDom.Link
                                             to={`/objednat?service=${service.id}`}
                                             className="inline-flex items-center gap-4 md:gap-5 group/cta w-fit"
