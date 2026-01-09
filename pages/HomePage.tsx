@@ -95,7 +95,7 @@ const DetailedServices: React.FC = () => {
 
                                 <div className="w-full md:w-[55%] lg:w-[60%] p-8 md:p-10 lg:p-14 xl:p-16 flex flex-col relative z-20 bg-surface-light border-none">
                                     <div>
-                                        <h3 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black uppercase tracking-tighter leading-[1.2] mb-4 md:mb-6 text-pretty">
+                                        <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black uppercase tracking-tighter leading-[1.2] mb-4 md:mb-6 text-pretty">
                                             <span className="text-surface-dark">{words[0]}</span>
                                             {words.length > 1 && (
                                                 <span className="ms-gradient-text ml-2 md:ml-3">
@@ -107,7 +107,7 @@ const DetailedServices: React.FC = () => {
                                                     ({service.subheading})
                                                 </span>
                                             )}
-                                        </h3>
+                                        </h2>
 
                                         <p className="text-surface-dark/90 font-medium text-sm lg:text-lg leading-relaxed mb-6 md:mb-10 max-w-2xl whitespace-pre-line">
                                             {service.description}

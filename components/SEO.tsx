@@ -34,6 +34,9 @@ const SEO: React.FC<SEOProps> = ({
 
         document.title = fullTitle;
 
+        // Domain for absolute URLs
+        const SITE_DOMAIN = 'https://lintercom.github.io/msfitnesstrener_web';
+
         // 2. Helper to set meta tags
         const setMetaTag = (selector: string, attribute: string, value: string) => {
             if (!value) return;
@@ -55,32 +58,39 @@ const SEO: React.FC<SEOProps> = ({
         // Standard Meta Tags
         setMetaTag('meta[name="description"]', 'content', description || seoConfig.home.description);
         setMetaTag('meta[name="keywords"]', 'content', keywords || seoConfig.globalKeywords);
+        setMetaTag('meta[name="robots"]', 'content', 'index, follow');
+
+        // Resolve absolute image URL
+        const rawOgImage = ogImage || seoConfig.ogImage || '/og-image.jpg';
+        const absoluteOgImage = rawOgImage.startsWith('http')
+            ? rawOgImage
+            : `${SITE_DOMAIN}${rawOgImage.startsWith('/') ? '' : '/'}${rawOgImage}`;
 
         // Open Graph Meta Tags
         setMetaTag('meta[property="og:title"]', 'content', ogTitle || title || seoConfig.home.title);
         setMetaTag('meta[property="og:description"]', 'content', ogDescription || description || seoConfig.home.description);
-        setMetaTag('meta[property="og:image"]', 'content', ogImage || seoConfig.ogImage || '/og-image.jpg');
+        setMetaTag('meta[property="og:image"]', 'content', absoluteOgImage);
         setMetaTag('meta[property="og:type"]', 'content', 'website');
         setMetaTag('meta[property="og:site_name"]', 'content', siteName);
+        setMetaTag('meta[property="og:url"]', 'content', window.location.href);
 
         // Twitter Meta Tags
         setMetaTag('meta[name="twitter:card"]', 'content', 'summary_large_image');
         setMetaTag('meta[name="twitter:title"]', 'content', ogTitle || title || seoConfig.home.title);
         setMetaTag('meta[name="twitter:description"]', 'content', ogDescription || description || seoConfig.home.description);
-        setMetaTag('meta[name="twitter:image"]', 'content', ogImage || seoConfig.ogImage || '/og-image.jpg');
+        setMetaTag('meta[name="twitter:image"]', 'content', absoluteOgImage);
 
         // Canonical Link
         let canonicalTag = document.querySelector('link[rel="canonical"]');
-        if (canonical) {
-            if (!canonicalTag) {
-                canonicalTag = document.createElement('link');
-                canonicalTag.setAttribute('rel', 'canonical');
-                document.head.appendChild(canonicalTag);
-            }
-            canonicalTag.setAttribute('href', canonical);
-        } else if (canonicalTag) {
-            canonicalTag.remove();
+        // Default to current page on production domain if not specific canonical provided
+        const finalCanonical = canonical || `https://lintercom.github.io${window.location.pathname}`;
+
+        if (!canonicalTag) {
+            canonicalTag = document.createElement('link');
+            canonicalTag.setAttribute('rel', 'canonical');
+            document.head.appendChild(canonicalTag);
         }
+        canonicalTag.setAttribute('href', finalCanonical);
 
     }, [title, description, keywords, ogTitle, ogDescription, ogImage, canonical, seoConfig]);
 
