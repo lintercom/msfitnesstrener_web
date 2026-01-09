@@ -240,13 +240,13 @@ const CookieConsent: React.FC = () => {
                             <div className="flex gap-3 w-full">
                                 <button
                                     onClick={handleAcceptNecessary}
-                                    className="flex-1 py-3 px-4 bg-gray-100 text-surface-dark/70 rounded-xl text-[10px] sm:text-xs font-black uppercase tracking-widest hover:bg-gray-200 hover:text-surface-dark transition-all whitespace-nowrap"
+                                    className="flex-1 py-2 sm:py-3 px-2 sm:px-4 bg-gray-100 text-surface-dark/70 rounded-xl text-[9px] sm:text-xs font-black uppercase tracking-widest hover:bg-gray-200 hover:text-surface-dark transition-all whitespace-nowrap"
                                 >
                                     Jen nezbytné
                                 </button>
                                 <button
                                     onClick={() => setShowDetails(true)}
-                                    className="flex-1 py-3 px-4 bg-white border-2 border-surface-dark/5 text-surface-dark rounded-xl text-[10px] sm:text-xs font-black uppercase tracking-widest hover:border-surface-dark/20 transition-all whitespace-nowrap"
+                                    className="flex-1 py-2 sm:py-3 px-2 sm:px-4 bg-white border-2 border-surface-dark/5 text-surface-dark rounded-xl text-[9px] sm:text-xs font-black uppercase tracking-widest hover:border-surface-dark/20 transition-all whitespace-nowrap"
                                 >
                                     Nastavení
                                 </button>
