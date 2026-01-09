@@ -26,6 +26,17 @@ const CookieConsent: React.FC = () => {
 
     const config = data.legal?.cookieConsent;
 
+    // Event listener for reopening settings
+    useEffect(() => {
+        const handleOpenSettings = () => {
+            setIsVisible(true);
+            setShowDetails(true);
+        };
+
+        window.addEventListener('open-cookie-settings', handleOpenSettings);
+        return () => window.removeEventListener('open-cookie-settings', handleOpenSettings);
+    }, []);
+
     useEffect(() => {
         if (!config || !config.enabled) return;
 

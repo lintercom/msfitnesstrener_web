@@ -127,6 +127,11 @@ const Footer: React.FC = () => {
             <ReactRouterDom.Link to="/obchodni-podminky" className="hover:text-white transition-colors whitespace-nowrap">Obchodní podmínky</ReactRouterDom.Link>
 
             <span className="hidden md:block w-1 h-1 bg-white/10 rounded-full"></span>
+            <button onClick={() => window.dispatchEvent(new Event('open-cookie-settings'))} className="hover:text-white transition-colors whitespace-nowrap text-left">
+              Nastavení cookies
+            </button>
+
+            <span className="hidden md:block w-1 h-1 bg-white/10 rounded-full"></span>
             <ReactRouterDom.Link to="/admin" className="hover:text-white transition-colors whitespace-nowrap">Admin Hub Access</ReactRouterDom.Link>
           </div>
         </div>
