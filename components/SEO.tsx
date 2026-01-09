@@ -59,6 +59,7 @@ const SEO: React.FC<SEOProps> = ({
         setMetaTag('meta[name="description"]', 'content', description || seoConfig.home.description);
         setMetaTag('meta[name="keywords"]', 'content', keywords || seoConfig.globalKeywords);
         setMetaTag('meta[name="robots"]', 'content', 'index, follow');
+        setMetaTag('meta[property="og:locale"]', 'content', 'cs_CZ');
 
         // Resolve absolute image URL
         const rawOgImage = ogImage || seoConfig.ogImage || '/og-image.jpg';

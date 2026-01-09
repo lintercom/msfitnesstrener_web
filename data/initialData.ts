@@ -20,7 +20,7 @@ export const initialData: SiteData = {
     logoScale: 100,
     heroImage: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80",
     favicon: "/favicon.ico",
-    slogan: "FITNESS COACH",
+    slogan: "OSOBNÍ TRENÉR",
     heroHeadlinePart1: "MARTIN",
     heroHeadlinePart2: "",
     heroHeadlinePart3Accent: "ŠŤASTNÝ",
@@ -28,7 +28,7 @@ export const initialData: SiteData = {
     servicesHighlightText: "Specializuji se na komplexní rozvoj síly, kondice a mobility.",
     contactEmail: "info@martinstastny.cz",
     contactPhone: "+420 123 456 789",
-    address: "Praha, Česká republika",
+    address: "Vizovice, Zlínský kraj",
     copyright: "© 2026 Martin Šťastný. Všechna práva vyhrazena.",
     socials: {
       facebook: 'https://www.facebook.com/profile.php?id=61578971855848&sk=about',
@@ -245,36 +245,36 @@ export const initialData: SiteData = {
     siteName: 'Martin Šťastný',
     titleSeparator: '|',
     home: {
-      title: 'Elite Fitness Coaching Vizovice',
-      description: 'Profesionální fitness coaching ve Vizovicích. Osobní tréninky, online coaching a transformace postavy.',
-      keywords: 'fitness, vizovice, coaching, osobní trenér'
+      title: 'Osobní trenér Vizovice | Martin Šťastný',
+      description: 'Profesionální fitness trenér ve Vizovicích a Zlíně. Individuální osobní tréninky, tréninkové plány na míru a nápravné cvičení.',
+      keywords: 'osobní trenér, vizovice, zlín, zlínský kraj, fitness trenér, cvičení, hubnutí, silový trénink'
     },
     services: {
-      title: 'Služby a Ceník | Martin Šťastný',
-      description: 'Přehled fitness služeb - od osobních tréninků po kompletní transformace a jídelníčky.',
-      keywords: 'ceník fitness, osobní trénink, jídelníček na míru'
+      title: 'Služby a Ceník | Osobní trenér Vizovice',
+      description: 'Komplexní fitness služby - osobní tréninky ve Vizovicích, sportovní příprava mládeže a online spolupráce. Vyberte si program na míru.',
+      keywords: 'ceník fitness, osobní trénink vizovice, sportovní příprava, online coaching'
     },
     gallery: {
-      title: 'Průběh Spolupráce & Galerie | Martin Šťastný',
-      description: 'Podívejte se, jak probíhá spolupráce a jakých výsledků dosahují moji klienti.',
-      keywords: 'výsledky, transformace, galerie fitness'
+      title: 'Výsledky a Galerie | Osobní trenér Martin Šťastný',
+      description: 'Reálné proměny klientů a ukázky z tréninků ve Vizovicích. Podívejte se, jakých výsledků dosahujeme společně.',
+      keywords: 'proměny postavy, výsledky cvičení, foto před a po, fitness galerie'
     },
     blog: {
-      title: 'Fitness Blog & Tipy | Martin Šťastný',
-      description: 'Tipy na trénink, stravu a zdravý životní styl pro vaše maximum.',
-      keywords: 'blog o fitness, tipy na cvičení, zdravá strava'
+      title: 'Fitness Blog | Tipy od trenéra',
+      description: 'Odborné články o tréninku, stravě a zdravém životním stylu. Tipy pro efektivní cvičení a regeneraci.',
+      keywords: 'fitness blog, články o cvičení, zdravá strava, tipy trenéra'
     },
     aboutMe: {
-      title: 'O mně | Martin Šťastný',
-      description: 'Poznejte můj příběh a přístup k fitness coachingu.',
-      keywords: 'o mě, martin šťastný, trenér vizovice'
+      title: 'O mně | Martin Šťastný - Osobní trenér',
+      description: 'Jsem certifikovaný fitness trenér se zaměřením na silový trénink a zdravý pohyb. Působím ve Vizovicích a okolí Zlína.',
+      keywords: 'o trenérovi, martin šťastný, kvalifikace trenéra, vizovice'
     },
     order: {
-      title: 'Začít Spolupráci | Martin Šťastný',
-      description: 'Vyplňte krátký formulář a začněte svou cestu za lepším já pod vedením Martina Šťastného.',
-      keywords: 'začít trénovat, objednávka trenéra, fitness dotazník'
+      title: 'Nezávazná poptávka | Začít cvičit',
+      description: 'Vyplňte krátký formulář a domluvte si úvodní konzultaci. První krok k vaší lepší kondici a zdraví.',
+      keywords: 'objednat trénink, konzultace zdarma, začít cvičit vizovice'
     },
-    globalKeywords: 'fitness trenér, vizovice, coaching, transformace, síla, hubnutí, blog o fitness',
+    globalKeywords: 'osobní trenér, vizovice, zlínský kraj, fitness, cvičení, zdravý životní styl, hubnutí, náběr svalů',
     ogImage: '',
   },
   orderForm: {
@@ -349,9 +349,9 @@ export const initialData: SiteData = {
   },
   ai: {
     enabled: true,
-    botName: 'MŠ Assistant',
+    botName: 'Asistent Martina Šťastného',
     welcomeMessage: 'Dobrý den, jak vám mohu pomoci s vaším tréninkem nebo progresem?',
-    systemPrompt: 'Jste zkušený fitness asistent pro kouče Martina Šťastného. Odpovídejte profesionálně, povzbudivě a věcně na dotazy ohledně tréninku, výživy a služeb Martina Šťastného.',
+    systemPrompt: 'Jste zkušený fitness asistent pro osobního trenéra Martina Šťastného. Odpovídejte profesionálně, povzbudivě a věcně v češtině na dotazy ohledně tréninku, výživy a služeb ve Vizovicích a Zlínském kraji.',
     model: 'gemini-3-flash-preview'
   },
 };
