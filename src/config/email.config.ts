@@ -1,5 +1,5 @@
 export const emailConfig = {
-    publicKey: 'oH75QBxPioG8wjGwj',
+    publicKey: '5Vs8HQvUrN4oaZwtW',
     form: {
         serviceId: 'service_7pryfsp',
         templateId: 'template_vh4czst',
