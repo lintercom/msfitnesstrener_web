@@ -108,7 +108,7 @@ const OrderPage: React.FC = () => {
                         title: 'Nová poptávka z webu',
                         name: `${formData.firstName} ${formData.lastName}`,
                         email: formData.email,
-                        message: `Telefon: ${formData.phone}\n\nVybrané služby: ${servicesNames}\n\nZpráva od klienta:\n${formData.note || 'Žádná zpráva'}`
+                        message: `Email: ${formData.email}\nTelefon: ${formData.phone}\n\nVybrané služby: ${servicesNames}\n\nZpráva od klienta:\n${formData.note || 'Žádná zpráva'}`
                     },
                     emailServiceConfig.publicKey
                 );
