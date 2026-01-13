@@ -61,6 +61,18 @@ const Header: React.FC = () => {
     }
   };
 
+  const handleLogoClick = (e: React.MouseEvent) => {
+    setIsMenuOpen(false);
+    if (location.pathname === '/') {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Clear hash if present
+      if (window.location.hash) {
+        window.history.pushState(null, '', window.location.pathname);
+      }
+    }
+  };
+
   const { logo, logoScale, companyName, socials } = data.general;
 
   return (
@@ -76,7 +88,7 @@ const Header: React.FC = () => {
         <div className={`w-full px-6 lg:px-12 relative flex items-center justify-between transition-all duration-300 overflow-visible ${isScrolled ? 'h-16' : 'h-20'
           }`}>
 
-          <ReactRouterDom.Link to="/" onClick={() => setIsMenuOpen(false)} className="flex items-center relative z-[60]">
+          <ReactRouterDom.Link to="/" onClick={handleLogoClick} className="flex items-center relative z-[60]">
             <div style={{
               height: isScrolled ? '40px' : '48px',
               width: data.appearance.header.logoMaxWidth || 'auto',
