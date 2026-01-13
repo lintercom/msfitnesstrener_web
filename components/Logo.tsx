@@ -6,7 +6,11 @@ const Logo: React.FC<{ className?: string, style?: React.CSSProperties }> = ({ c
   const { data } = useData();
   const { logo, companyName } = data.general;
 
-  const logoUrl = logo || "/msfitnesstrener_web/images/logo.png";
+  let logoUrl = logo;
+  // Fallback for missing logo or legacy .svg path that doesn't exist
+  if (!logoUrl || logoUrl.includes('logo-light.svg')) {
+    logoUrl = "/msfitnesstrener_web/images/logo.png";
+  }
 
   if (logoUrl) {
     return (
