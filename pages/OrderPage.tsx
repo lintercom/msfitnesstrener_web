@@ -223,7 +223,7 @@ const OrderPage: React.FC = () => {
                                                 )}
                                                 {data.orderForm.phone.enabled && (
                                                     <div className="space-y-3">
-                                                        <label className="text-[10px] font-black uppercase tracking-[0.4em] text-surface-dark/60 ml-4">{data.orderForm.phone.label}</label>
+                                                        <label className="text-[10px] font-black uppercase tracking-[0.4em] text-surface-dark/60 ml-4">{ }</label>
                                                         <input
                                                             type="tel"
                                                             autoComplete="tel"
