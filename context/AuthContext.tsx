@@ -3,6 +3,8 @@ import React, { createContext, useState, useContext, ReactNode, useEffect } from
 import { User } from '../types';
 import emailjs from '@emailjs/browser';
 
+import { emailConfig } from '../src/config/email.config';
+
 interface AuthContextType {
   currentUser: User | null;
   isAuthenticated: boolean;
@@ -75,8 +77,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return password;
   };
 
+
+
   const requestPasswordReset = async (email: string): Promise<{ success: boolean; message: string }> => {
-    // Get EmailJS config from localStorage
+    // Get stored data strictly for recovery email check, NOT for config
     const storedData = localStorage.getItem('printcore-data');
     if (!storedData) {
       return { success: false, message: 'Konfigurace systému nebyla nalezena.' };
@@ -84,39 +88,41 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     try {
       const data = JSON.parse(storedData);
-      const emailConfig = data.integrations?.email;
 
-      if (!emailConfig || !emailConfig.config.serviceId || !emailConfig.config.publicKey) {
-        return { success: false, message: 'EmailJS není správně nakonfigurován.' };
+      // Check if email integration is generally enabled
+      if (!data.integrations?.email?.enabled) {
+        return { success: false, message: 'Odesílání emailů je v systému deaktivováno.' };
       }
 
-      const recoveryEmail = emailConfig.config.recoveryEmail;
+      const recoveryEmail = data.integrations.email.config.recoveryEmail;
 
       // Check if entered email matches stored recovery email
       if (email !== recoveryEmail) {
         return { success: false, message: 'Zadaný email neodpovídá registračnímu emailu pro obnovu.' };
       }
 
-      if (!emailConfig.enabled) {
-        return { success: false, message: 'Odesílání emailů je v systému deaktivováno.' };
+      // Validate config availability
+      if (!emailConfig.auth.serviceId || !emailConfig.publicKey) {
+        return { success: false, message: 'EmailJS není správně nakonfigurován (chybí ID).' };
       }
 
       // Generate new random password
       const newPassword = generateRandomPassword();
 
-      // Check if reset template ID exists, otherwise use main template
-      const templateId = emailConfig.config.resetTemplateId || emailConfig.config.templateId;
+      // Use auth template if defined, otherwise fallback or error
+      // Note: User needs to create this template in EmailJS
+      const templateId = emailConfig.auth.templateId || emailConfig.form.templateId; // Fallback to form template if auth specific is missing, though distinct is better
 
       // Send email with new password
       await emailjs.send(
-        emailConfig.config.serviceId,
+        emailConfig.auth.serviceId,
         templateId,
         {
           to_email: email,
           new_password: newPassword,
           title: 'Obnova hesla - Admin Hub'
         },
-        emailConfig.config.publicKey
+        emailConfig.publicKey
       );
 
       // Update stored password

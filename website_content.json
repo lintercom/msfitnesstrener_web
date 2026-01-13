@@ -466,9 +466,9 @@
       "enabled": true,
       "provider": "emailjs",
       "config": {
-        "serviceId": "service_2m1lsn8",
-        "templateId": "template_cxbqppi",
-        "publicKey": "oH75QBxPioG8wjGwj",
+        "serviceId": "",
+        "templateId": "",
+        "publicKey": "",
         "notificationEmail": "slavik-petr@seznam.cz",
         "recoveryEmail": "slavik-petr@seznam.cz"
       }

@@ -7,6 +7,8 @@ import { Service } from '../types';
 import emailjs from '@emailjs/browser';
 import SEO from '../components/SEO';
 
+import { emailConfig as emailServiceConfig } from '../src/config/email.config';
+
 type ClientTab = 'new' | 'existing';
 
 const OrderPage: React.FC = () => {
@@ -74,6 +76,8 @@ const OrderPage: React.FC = () => {
         }));
     };
 
+
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -85,8 +89,10 @@ const OrderPage: React.FC = () => {
         setStatus('submitting');
 
         // EMAILJS INTEGRATION
-        const emailConfig = data.integrations.email;
-        if (emailConfig && emailConfig.enabled && emailConfig.config.serviceId && emailConfig.config.templateId && emailConfig.config.publicKey) {
+        // Check if enabled in CMS/JSON, but usage config from file
+        const isEmailEnabled = data.integrations.email.enabled;
+
+        if (isEmailEnabled && emailServiceConfig.form.serviceId && emailServiceConfig.form.templateId && emailServiceConfig.publicKey) {
             try {
                 // Mapping services names
                 const servicesNames = formData.selectedServices.map(id => {
@@ -95,15 +101,15 @@ const OrderPage: React.FC = () => {
                 }).join(', ');
 
                 await emailjs.send(
-                    emailConfig.config.serviceId,
-                    emailConfig.config.templateId,
+                    emailServiceConfig.form.serviceId,
+                    emailServiceConfig.form.templateId,
                     {
                         title: 'Nová poptávka z webu',
                         name: `${formData.firstName} ${formData.lastName}`,
                         email: formData.email,
                         message: `Telefon: ${formData.phone}\n\nVybrané služby: ${servicesNames}\n\nZpráva od klienta:\n${formData.note || 'Žádná zpráva'}`
                     },
-                    emailConfig.config.publicKey
+                    emailServiceConfig.publicKey
                 );
 
                 setStatus('success');
