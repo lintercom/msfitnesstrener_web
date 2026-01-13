@@ -10,11 +10,7 @@ const LoginPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [showResetModal, setShowResetModal] = useState(false);
-  const [resetEmail, setResetEmail] = useState('');
-  const [resetLoading, setResetLoading] = useState(false);
-  const [resetMessage, setResetMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-  const { login, isAuthenticated, isAdmin, requestPasswordReset } = useAuth();
+  const { login, isAuthenticated, isAdmin } = useAuth();
   const navigate = ReactRouterDom.useNavigate();
   const location = ReactRouterDom.useLocation();
 
@@ -44,28 +40,7 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  const handlePasswordReset = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setResetMessage(null);
-    setResetLoading(true);
 
-    try {
-      const result = await requestPasswordReset(resetEmail);
-      setResetMessage({ type: result.success ? 'success' : 'error', text: result.message });
-
-      if (result.success) {
-        setTimeout(() => {
-          setShowResetModal(false);
-          setResetEmail('');
-          setResetMessage(null);
-        }, 3000);
-      }
-    } catch (err) {
-      setResetMessage({ type: 'error', text: 'Nastala neočekávaná chyba.' });
-    } finally {
-      setResetLoading(false);
-    }
-  };
 
   const inputClasses = "w-full bg-gray-50 border border-surface-dark/10 rounded-2xl p-4 text-surface-dark placeholder-surface-dark/30 focus:outline-none focus:border-neon-blaze transition-all duration-500 font-medium text-lg";
 
@@ -152,69 +127,11 @@ const LoginPage: React.FC = () => {
               {loading ? 'AUTORIZACE...' : 'VSTOUPIT'}
             </button>
 
-            <div className="flex justify-center">
-              <button
-                type="button"
-                onClick={() => setShowResetModal(true)}
-                className="text-[10px] font-black uppercase tracking-[0.4em] text-surface-dark/40 hover:text-neon-blaze transition-all mt-4"
-              >
-                Zapomenuté heslo?
-              </button>
-            </div>
+
           </form>
         </div>
 
-        {/* Password Reset Modal */}
-        {showResetModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-background/80 backdrop-blur-sm animate-in fade-in">
-            <div className="bg-surface-light rounded-[3rem] shadow-premium p-10 md:p-14 max-w-md w-full relative animate-in zoom-in-95 duration-300 flex flex-col items-center text-center">
-              <button
-                onClick={() => { setShowResetModal(false); setResetMessage(null); }}
-                className="absolute top-6 right-6 w-10 h-10 rounded-full flex items-center justify-center text-surface-dark/20 hover:text-surface-dark transition-colors"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
 
-              <h3 className="text-3xl font-black text-surface-dark uppercase tracking-tighter leading-none mb-2">Obnova hesla</h3>
-              <p className="text-surface-dark/60 text-sm mb-8">Zadejte svůj admin email a my vám pošleme nové heslo.</p>
-
-              <form onSubmit={handlePasswordReset} className="space-y-6 w-full text-left">
-                <div className="space-y-3">
-                  <label htmlFor="reset-email" className="text-[10px] font-black uppercase tracking-[0.4em] text-surface-dark/65 ml-4">
-                    Email
-                  </label>
-                  <input
-                    id="reset-email"
-                    type="text"
-                    required
-                    placeholder=""
-                    value={resetEmail}
-                    onChange={(e) => setResetEmail(e.target.value)}
-                    className={inputClasses}
-                  />
-                </div>
-
-                {resetMessage && (
-                  <div className={`p-4 rounded-2xl border ${resetMessage.type === 'success' ? 'bg-green-50 border-green-100' : 'bg-red-50 border-red-100'}`}>
-                    <p className={`text-[10px] font-black uppercase tracking-widest text-center ${resetMessage.type === 'success' ? 'text-green-600' : 'text-red-600'}`}>
-                      {resetMessage.text}
-                    </p>
-                  </div>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={resetLoading}
-                  className="w-full py-4 neon-gradient text-white rounded-full font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-neon-glow hover:scale-[1.02] active:scale-95 text-sm disabled:opacity-50"
-                >
-                  {resetLoading ? 'ODESÍLÁM...' : 'ODESLAT NOVÉ HESLO'}
-                </button>
-              </form>
-            </div>
-          </div>
-        )}
 
         <div className="mt-12 text-center">
           <ReactRouterDom.Link to="/" className="text-[10px] font-black uppercase tracking-[0.5em] text-white/40 hover:text-white transition-all inline-flex items-center gap-4 group">
