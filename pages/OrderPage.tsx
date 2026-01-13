@@ -86,6 +86,18 @@ const OrderPage: React.FC = () => {
             return;
         }
 
+        // Validační kontroly
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+            alert('Prosím zadejte platnou emailovou adresu.');
+            return;
+        }
+
+        if (formData.phone.replace(/\s/g, '').length < 9) {
+            alert('Prosím zadejte platné telefonní číslo (alespoň 9 číslic).');
+            return;
+        }
+
         setStatus('submitting');
 
         // EMAILJS INTEGRATION
@@ -213,7 +225,20 @@ const OrderPage: React.FC = () => {
                                                 {data.orderForm.phone.enabled && (
                                                     <div className="space-y-3">
                                                         <label className="text-[10px] font-black uppercase tracking-[0.4em] text-surface-dark/60 ml-4">{data.orderForm.phone.label}</label>
-                                                        <input type="tel" required={data.orderForm.phone.required} className={inputClasses} value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} />
+                                                        <input
+                                                            type="tel"
+                                                            required={data.orderForm.phone.required}
+                                                            className={inputClasses}
+                                                            value={formData.phone}
+                                                            onChange={e => {
+                                                                // Povolit pouze čísla, mezery a + na začátku
+                                                                const value = e.target.value;
+                                                                if (/^[+]?[0-9\s]*$/.test(value)) {
+                                                                    setFormData({ ...formData, phone: value });
+                                                                }
+                                                            }}
+                                                            placeholder="+420 123 456 789"
+                                                        />
                                                     </div>
                                                 )}
                                             </div>
