@@ -333,11 +333,68 @@ const OrderPage: React.FC = () => {
                                 </div>
 
                                 <div className={`transition-all duration-700 ease-in-out ${activeTab === 'existing' ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-95 pointer-events-none absolute inset-0'}`}>
-                                    <div className="bg-surface-light/80 backdrop-blur-sm border border-surface-dark/5 rounded-[3rem] p-12 md:p-20 shadow-premium relative overflow-hidden group flex flex-col items-center text-center">
-                                        <div className="w-24 h-24 bg-surface-dark/5 rounded-[2rem] flex items-center justify-center text-surface-dark/20 mb-10 group-hover:neon-gradient group-hover:text-white transition-all duration-500"><svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg></div>
-                                        <h2 className="text-4xl md:text-5xl font-black text-surface-dark uppercase tracking-tighter leading-none mb-6">Klientský <span className="ms-gradient-text">portálu</span></h2>
-                                        <p className="text-surface-dark/70 font-medium text-lg max-w-lg mb-12">Na vývoji členské sekce usilovně pracujeme. Brzy zde najdeš svůj tréninkový deník a progresové grafy.</p>
-                                        <div className="px-8 py-3 bg-surface-dark text-white rounded-full text-[10px] font-black uppercase tracking-[0.4em]">UNDER CONSTRUCTION</div>
+                                    <div className="bg-surface-light/80 backdrop-blur-sm border border-surface-dark/5 rounded-[3rem] p-8 md:p-16 shadow-premium relative overflow-hidden group">
+                                        <div className="absolute top-0 right-0 w-96 h-96 bg-neon-blaze opacity-0 blur-[150px] group-hover:opacity-10 transition-opacity duration-1000 pointer-events-none"></div>
+
+                                        <div className="relative z-10 mb-12 text-center">
+                                            <h2 className="text-4xl md:text-6xl font-black text-surface-dark uppercase tracking-tighter leading-[0.9] mb-6">
+                                                REZERVAČNÍ <span className="ms-gradient-text">SYSTÉM</span>
+                                            </h2>
+                                            <p className="text-surface-dark/70 font-medium text-lg leading-relaxed max-w-2xl mx-auto text-pretty">
+                                                Vyberte si typ tréninku a zarezervujte si svůj termín přímo v našem systému Reenio.
+                                            </p>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+                                            {/* OSOBNÍ TRÉNINK */}
+                                            <a
+                                                href="https://martin-stastny.reenio.cz/cs/service/osobni-trenink-51708"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="group/btn relative bg-white border border-surface-dark/5 rounded-3xl p-8 text-center transition-all duration-500 hover:shadow-neon-glow hover:-translate-y-2 flex flex-col items-center"
+                                            >
+                                                <div className="w-16 h-16 rounded-2xl neon-gradient flex items-center justify-center text-white mb-6 shadow-lg group-hover/btn:scale-110 transition-transform duration-500">
+                                                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                                                </div>
+                                                <h3 className="text-xl font-black text-surface-dark uppercase tracking-tight mb-2">OSOBNÍ<br />TRÉNINK</h3>
+                                                <div className="mt-auto pt-6">
+                                                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white bg-surface-dark px-6 py-2 rounded-full group-hover/btn:neon-gradient transition-colors">Rezervovat</span>
+                                                </div>
+                                            </a>
+
+                                            {/* SKUPOVÝ TRÉNINK */}
+                                            <a
+                                                href="https://martin-stastny.reenio.cz/cs/service/kettlebell-total-steel-skupinova-lekce-53736"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="group/btn relative bg-white border border-surface-dark/5 rounded-3xl p-8 text-center transition-all duration-500 hover:shadow-neon-glow hover:-translate-y-2 flex flex-col items-center"
+                                            >
+                                                <div className="w-16 h-16 rounded-2xl neon-gradient flex items-center justify-center text-white mb-6 shadow-lg group-hover/btn:scale-110 transition-transform duration-500">
+                                                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                                                </div>
+                                                <h3 className="text-xl font-black text-surface-dark uppercase tracking-tight mb-2">SKUPINOVÝ<br />TRÉNINK</h3>
+                                                <p className="text-[10px] font-bold text-surface-dark/40 uppercase tracking-widest mb-4">(Kettlebell Total Steel)</p>
+                                                <div className="mt-auto pt-2">
+                                                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white bg-surface-dark px-6 py-2 rounded-full group-hover/btn:neon-gradient transition-colors">Rezervovat</span>
+                                                </div>
+                                            </a>
+
+                                            {/* KRUHOVÝ TRÉNINK */}
+                                            <a
+                                                href="https://martin-stastny.reenio.cz/cs/service/kruhovy-trenink-pro-sportovce-10-18-let-54176"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="group/btn relative bg-white border border-surface-dark/5 rounded-3xl p-8 text-center transition-all duration-500 hover:shadow-neon-glow hover:-translate-y-2 flex flex-col items-center"
+                                            >
+                                                <div className="w-16 h-16 rounded-2xl neon-gradient flex items-center justify-center text-white mb-6 shadow-lg group-hover/btn:scale-110 transition-transform duration-500">
+                                                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                                                </div>
+                                                <h3 className="text-xl font-black text-surface-dark uppercase tracking-tight mb-2">KRUHOVÝ<br />TRÉNINK</h3>
+                                                <div className="mt-auto pt-6">
+                                                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white bg-surface-dark px-6 py-2 rounded-full group-hover/btn:neon-gradient transition-colors">Rezervovat</span>
+                                                </div>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
