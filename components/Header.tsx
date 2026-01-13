@@ -63,12 +63,21 @@ const Header: React.FC = () => {
 
   const handleLogoClick = (e: React.MouseEvent) => {
     setIsMenuOpen(false);
-    if (location.pathname === '/') {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      // Clear hash if present
-      if (window.location.hash) {
-        window.history.pushState(null, '', window.location.pathname);
+
+    // Normalize path to compare correctly
+    const currentPath = location.pathname.replace(/\/$/, '') || '/';
+    const isHome = currentPath === '/';
+
+    if (isHome) {
+      // If we have a hash or are scrolled down, handle it manually for a smooth experience
+      if (window.location.hash || window.scrollY > 0) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Clear the hash from the URL without reloading
+        if (window.location.hash) {
+          window.history.pushState(null, '', window.location.pathname);
+        }
       }
     }
   };
