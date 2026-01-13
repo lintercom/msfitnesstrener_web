@@ -113,24 +113,7 @@ const OrderPage: React.FC = () => {
                     emailServiceConfig.publicKey
                 );
 
-                // 2. Odeslání automatické odpovědi klientovi (best-effort)
-                if (emailServiceConfig.form.autoReplyTemplateId) {
-                    try {
-                        await emailjs.send(
-                            emailServiceConfig.form.serviceId,
-                            emailServiceConfig.form.autoReplyTemplateId,
-                            {
-                                name: formData.firstName,
-                                email: formData.email,
-                                message: formData.note
-                            },
-                            emailServiceConfig.publicKey
-                        );
-                    } catch (autoReplyError) {
-                        console.warn('Auto-reply failed (non-critical):', autoReplyError);
-                        // We do not throw here, so the main submission is still considered successful
-                    }
-                }
+
 
                 setStatus('success');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
