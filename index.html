@@ -14,7 +14,7 @@
           return s.replace(/~and~/g, '&')
         }).join('?');
         window.history.replaceState(null, null,
-          l.pathname.slice(0, l.pathname.length - l.search.length) + decoded + l.hash
+          l.pathname.slice(0, l.pathname.length - (l.search + l.hash).length) + decoded.slice(2) + l.hash
         );
       }
     }(window.location))
@@ -140,7 +140,6 @@
 
 <body>
   <div id="root"></div>
-  <script type="module" src="./index.tsx"></script>
   <script type="module" src="/index.tsx"></script>
 </body>
 
