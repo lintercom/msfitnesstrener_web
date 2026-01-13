@@ -93,8 +93,8 @@ const OrderPage: React.FC = () => {
             return;
         }
 
-        if (formData.phone.replace(/\s/g, '').length < 9) {
-            alert('Prosím zadejte platné telefonní číslo (alespoň 9 číslic).');
+        if (formData.phone.replace(/\s/g, '').length < 9 || !/^[+]?[0-9\s]+$/.test(formData.phone)) {
+            alert('Prosím zadejte platné telefonní číslo (alespoň 9 číslic, pouze čísla).');
             return;
         }
 
