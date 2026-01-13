@@ -237,7 +237,7 @@ const OrderPage: React.FC = () => {
                                                                     setFormData({ ...formData, phone: value });
                                                                 }
                                                             }}
-                                                            placeholder="+420 123 456 789"
+                                                            placeholder=""
                                                         />
                                                     </div>
                                                 )}
