@@ -132,7 +132,9 @@ const OrderPage: React.FC = () => {
             } catch (error) {
                 console.error('EmailJS Error:', error);
                 setStatus('error');
-                alert('Odeslání selhalo. Zkontrolujte prosím připojení nebo zkuste později.');
+                // Temporary debug alert
+                const errorMsg = error instanceof Error ? error.message : JSON.stringify(error);
+                alert(`Odeslání selhalo (Debug info): ${errorMsg}`);
             }
         } else {
             // Fallback or demo mode (when email is not configured)
