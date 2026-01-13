@@ -16,7 +16,7 @@ const defaultDecoration: SectionDecoration = {
 export const initialData: SiteData = {
   general: {
     companyName: "Martin Šťastný",
-    logo: "/msfitnesstrener_web/images/logo-light.svg",
+    logo: "/msfitnesstrener_web/images/logo.png",
     logoScale: 100,
     heroImage: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80",
     favicon: "/favicon.ico",

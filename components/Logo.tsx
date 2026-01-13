@@ -6,7 +6,7 @@ const Logo: React.FC<{ className?: string, style?: React.CSSProperties }> = ({ c
   const { data } = useData();
   const { logo, companyName } = data.general;
 
-  const logoUrl = logo;
+  const logoUrl = logo || "/msfitnesstrener_web/images/logo.png";
 
   if (logoUrl) {
     return (

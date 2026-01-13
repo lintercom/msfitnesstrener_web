@@ -140,7 +140,51 @@
 </head>
 
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <!-- Pre-hydration Loading State -->
+    <div
+      style="position: fixed; inset: 0; background-color: #0F172A; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; font-family: sans-serif;">
+      <div style="margin-bottom: 2rem; animation: ms-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;">
+        <img src="/msfitnesstrener_web/images/logo.png" alt="Martin Šťastný"
+          style="height: 64px; width: auto; object-fit: contain;">
+      </div>
+      <div
+        style="width: 80px; height: 3px; background-color: rgba(255,255,255,0.1); border-radius: 9999px; overflow: hidden; position: relative;">
+        <div
+          style="position: absolute; inset: 0; background: linear-gradient(90deg, #FB923C, #F43F5E); transform: translateX(-100%); animation: ms-loading 1.5s infinite ease-in-out;">
+        </div>
+      </div>
+    </div>
+    <style>
+      @keyframes ms-pulse {
+
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+
+        50% {
+          opacity: 0.8;
+          transform: scale(0.98);
+        }
+      }
+
+      @keyframes ms-loading {
+        0% {
+          transform: translateX(-100%);
+        }
+
+        50% {
+          transform: translateX(0);
+        }
+
+        100% {
+          transform: translateX(100%);
+        }
+      }
+    </style>
+  </div>
   <script type="module" src="/index.tsx"></script>
 </body>
 
