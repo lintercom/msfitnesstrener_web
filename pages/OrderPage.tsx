@@ -113,18 +113,23 @@ const OrderPage: React.FC = () => {
                     emailServiceConfig.publicKey
                 );
 
-                // 2. Odeslání automatické odpovědi klientovi (pokud je definovaná šablona)
+                // 2. Odeslání automatické odpovědi klientovi (best-effort)
                 if (emailServiceConfig.form.autoReplyTemplateId) {
-                    await emailjs.send(
-                        emailServiceConfig.form.serviceId,
-                        emailServiceConfig.form.autoReplyTemplateId, // template_ykj4e4g
-                        {
-                            name: formData.firstName, // Pro oslovení v emailu
-                            email: formData.email,     // Kam se to má poslat (To Email)
-                            message: formData.note     // Původní zpráva klienta (volitelné)
-                        },
-                        emailServiceConfig.publicKey
-                    );
+                    try {
+                        await emailjs.send(
+                            emailServiceConfig.form.serviceId,
+                            emailServiceConfig.form.autoReplyTemplateId,
+                            {
+                                name: formData.firstName,
+                                email: formData.email,
+                                message: formData.note
+                            },
+                            emailServiceConfig.publicKey
+                        );
+                    } catch (autoReplyError) {
+                        console.warn('Auto-reply failed (non-critical):', autoReplyError);
+                        // We do not throw here, so the main submission is still considered successful
+                    }
                 }
 
                 setStatus('success');
