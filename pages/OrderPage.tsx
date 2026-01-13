@@ -100,9 +100,10 @@ const OrderPage: React.FC = () => {
                     return s ? s.title : id;
                 }).join(', ');
 
+                // 1. Odeslání notifikace trenérovi
                 await emailjs.send(
                     emailServiceConfig.form.serviceId,
-                    emailServiceConfig.form.templateId,
+                    emailServiceConfig.form.templateId, // template_vh4czst
                     {
                         title: 'Nová poptávka z webu',
                         name: `${formData.firstName} ${formData.lastName}`,
@@ -111,6 +112,20 @@ const OrderPage: React.FC = () => {
                     },
                     emailServiceConfig.publicKey
                 );
+
+                // 2. Odeslání automatické odpovědi klientovi (pokud je definovaná šablona)
+                if (emailServiceConfig.form.autoReplyTemplateId) {
+                    await emailjs.send(
+                        emailServiceConfig.form.serviceId,
+                        emailServiceConfig.form.autoReplyTemplateId, // template_ykj4e4g
+                        {
+                            name: formData.firstName, // Pro oslovení v emailu
+                            email: formData.email,     // Kam se to má poslat (To Email)
+                            message: formData.note     // Původní zpráva klienta (volitelné)
+                        },
+                        emailServiceConfig.publicKey
+                    );
+                }
 
                 setStatus('success');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
