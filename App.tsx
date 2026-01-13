@@ -32,10 +32,12 @@ const AdminProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children
  * Pomocná komponenta pro zajištění scrollování nahoru při změně stránky.
  */
 const ScrollToTop = () => {
-  const { pathname } = ReactRouterDom.useLocation();
+  const { pathname, hash } = ReactRouterDom.useLocation();
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    if (!hash) {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, hash]);
   return null;
 };
 

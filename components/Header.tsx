@@ -32,20 +32,29 @@ const Header: React.FC = () => {
   }, [isMenuOpen]);
 
   const handleNavLinkClick = (e: React.MouseEvent, path: string) => {
-    if (path.includes('#sluzby')) {
-      e.preventDefault();
-      setIsMenuOpen(false);
+    if (path.includes('#')) {
+      const [basePath, hash] = path.split('#');
+      // Normalize paths to compare correctly (important for GitHub Pages basename)
+      const currentPath = location.pathname.replace(/\/$/, '') || '/';
+      const targetPath = basePath === '' ? '/' : basePath;
+      const onSamePage = currentPath === targetPath;
 
-      if (location.pathname === '/') {
-        const element = document.getElementById('sluzby');
+      if (onSamePage) {
+        e.preventDefault();
+        setIsMenuOpen(false);
+
+        const element = document.getElementById(hash);
         if (element) {
           const headerOffset = 80;
           const elementPosition = element.getBoundingClientRect().top;
           const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
           window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+          // Update URL hash without reload
+          window.history.pushState(null, '', path);
         }
       } else {
-        navigate('/#sluzby');
+        setIsMenuOpen(false);
       }
     } else {
       setIsMenuOpen(false);
