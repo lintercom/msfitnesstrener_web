@@ -93,8 +93,9 @@ const OrderPage: React.FC = () => {
             return;
         }
 
-        if (formData.phone.replace(/\s/g, '').length < 9 || !/^[+]?[0-9\s]+$/.test(formData.phone)) {
-            alert('Prosím zadejte platné telefonní číslo (alespoň 9 číslic, pouze čísla).');
+        const cleanPhone = formData.phone.replace(/[\s\-\(\)]/g, '');
+        if (cleanPhone.length < 9 || !/^[+]?[0-9]+$/.test(cleanPhone)) {
+            alert('Prosím zadejte platné telefonní číslo (alespoň 9 číslic).');
             return;
         }
 
@@ -207,19 +208,19 @@ const OrderPage: React.FC = () => {
                                                 {data.orderForm.firstName.enabled && (
                                                     <div className="space-y-3">
                                                         <label className="text-[10px] font-black uppercase tracking-[0.4em] text-surface-dark/60 ml-4">{data.orderForm.firstName.label}</label>
-                                                        <input type="text" required={data.orderForm.firstName.required} className={inputClasses} value={formData.firstName} onChange={e => setFormData({ ...formData, firstName: e.target.value })} />
+                                                        <input type="text" autoComplete="given-name" required={data.orderForm.firstName.required} className={inputClasses} value={formData.firstName} onChange={e => setFormData({ ...formData, firstName: e.target.value })} />
                                                     </div>
                                                 )}
                                                 {data.orderForm.lastName.enabled && (
                                                     <div className="space-y-3">
                                                         <label className="text-[10px] font-black uppercase tracking-[0.4em] text-surface-dark/60 ml-4">{data.orderForm.lastName.label}</label>
-                                                        <input type="text" required={data.orderForm.lastName.required} className={inputClasses} value={formData.lastName} onChange={e => setFormData({ ...formData, lastName: e.target.value })} />
+                                                        <input type="text" autoComplete="family-name" required={data.orderForm.lastName.required} className={inputClasses} value={formData.lastName} onChange={e => setFormData({ ...formData, lastName: e.target.value })} />
                                                     </div>
                                                 )}
                                                 {data.orderForm.email.enabled && (
                                                     <div className="space-y-3">
                                                         <label className="text-[10px] font-black uppercase tracking-[0.4em] text-surface-dark/60 ml-4">{data.orderForm.email.label}</label>
-                                                        <input type="email" required={data.orderForm.email.required} className={inputClasses} value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
+                                                        <input type="email" autoComplete="email" required={data.orderForm.email.required} className={inputClasses} value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
                                                     </div>
                                                 )}
                                                 {data.orderForm.phone.enabled && (
@@ -227,13 +228,14 @@ const OrderPage: React.FC = () => {
                                                         <label className="text-[10px] font-black uppercase tracking-[0.4em] text-surface-dark/60 ml-4">{data.orderForm.phone.label}</label>
                                                         <input
                                                             type="tel"
+                                                            autoComplete="tel"
                                                             required={data.orderForm.phone.required}
                                                             className={inputClasses}
                                                             value={formData.phone}
                                                             onChange={e => {
-                                                                // Povolit pouze čísla, mezery a + na začátku
+                                                                // Povolit pouze čísla, mezery, pomlčky, závorky a + na začátku
                                                                 const value = e.target.value;
-                                                                if (/^[+]?[0-9\s]*$/.test(value)) {
+                                                                if (/^[+]?[0-9\s\-\(\)]*$/.test(value)) {
                                                                     setFormData({ ...formData, phone: value });
                                                                 }
                                                             }}
