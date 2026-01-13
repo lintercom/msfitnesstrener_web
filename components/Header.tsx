@@ -69,16 +69,9 @@ const Header: React.FC = () => {
     const isHome = currentPath === '/';
 
     if (isHome) {
-      // If we have a hash or are scrolled down, handle it manually for a smooth experience
-      if (window.location.hash || window.scrollY > 0) {
-        e.preventDefault();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-
-        // Clear the hash from the URL without reloading
-        if (window.location.hash) {
-          window.history.pushState(null, '', window.location.pathname);
-        }
-      }
+      // Just scroll to top smoothly, exactly like the scroll-to-top arrow
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
