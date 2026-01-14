@@ -35,7 +35,7 @@ const SEO: React.FC<SEOProps> = ({
         document.title = fullTitle;
 
         // Domain for absolute URLs
-        const SITE_DOMAIN = 'https://lintercom.github.io/msfitnesstrener_web';
+        const SITE_DOMAIN = 'https://martin-stastny.cz';
 
         // 2. Helper to set meta tags
         const setMetaTag = (selector: string, attribute: string, value: string) => {
@@ -56,6 +56,7 @@ const SEO: React.FC<SEOProps> = ({
         };
 
         // Standard Meta Tags
+        setMetaTag('meta[name="google-site-verification"]', 'content', '5axqCGdDIYmBGEAD_L561iIe32xmTInxDYLOOAOIp2M');
         setMetaTag('meta[name="description"]', 'content', description || seoConfig.home.description);
         setMetaTag('meta[name="keywords"]', 'content', keywords || seoConfig.globalKeywords);
         setMetaTag('meta[name="robots"]', 'content', 'index, follow');
@@ -84,7 +85,7 @@ const SEO: React.FC<SEOProps> = ({
         // Canonical Link
         let canonicalTag = document.querySelector('link[rel="canonical"]');
         // Default to current page on production domain if not specific canonical provided
-        const finalCanonical = canonical || `https://lintercom.github.io${window.location.pathname}`;
+        const finalCanonical = canonical || `https://martin-stastny.cz${window.location.pathname}`;
 
         if (!canonicalTag) {
             canonicalTag = document.createElement('link');

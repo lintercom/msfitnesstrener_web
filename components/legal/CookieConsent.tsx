@@ -234,19 +234,19 @@ const CookieConsent: React.FC = () => {
 
 
                 {/* Buttons Actions */}
-                <div className={`flex flex-col sm:flex-row gap-3 relative z-10 ${showDetails ? 'w-full pt-2' : ''} md:w-auto md:min-w-[300px]`}>
+                <div className={`flex flex-col gap-3 relative z-10 w-full ${showDetails ? 'pt-2' : ''} md:w-auto md:min-w-[280px]`}>
                     {!showDetails ? (
                         <>
-                            <div className="flex gap-3 w-full">
+                            <div className="flex flex-col sm:flex-row gap-3 w-full">
                                 <button
                                     onClick={handleAcceptNecessary}
-                                    className="flex-1 py-2 sm:py-3 px-2 sm:px-4 bg-gray-100 text-surface-dark/70 rounded-xl text-[9px] sm:text-xs font-black uppercase tracking-widest hover:bg-gray-200 hover:text-surface-dark transition-all whitespace-nowrap"
+                                    className="w-full sm:flex-1 py-3 px-4 bg-gray-100 text-surface-dark/70 rounded-xl text-[10px] sm:text-xs font-black uppercase tracking-widest hover:bg-gray-200 hover:text-surface-dark transition-all"
                                 >
                                     Jen nezbytné
                                 </button>
                                 <button
                                     onClick={() => setShowDetails(true)}
-                                    className="flex-1 py-2 sm:py-3 px-2 sm:px-4 bg-white border-2 border-surface-dark/5 text-surface-dark rounded-xl text-[9px] sm:text-xs font-black uppercase tracking-widest hover:border-surface-dark/20 transition-all whitespace-nowrap"
+                                    className="w-full sm:flex-1 py-3 px-4 bg-white border-2 border-surface-dark/5 text-surface-dark rounded-xl text-[10px] sm:text-xs font-black uppercase tracking-widest hover:border-surface-dark/20 transition-all"
                                 >
                                     Nastavení
                                 </button>
@@ -262,20 +262,20 @@ const CookieConsent: React.FC = () => {
                         <>
                             <button
                                 onClick={() => setShowDetails(false)}
-                                className="w-full sm:w-auto py-3 px-6 bg-gray-50 text-surface-dark/60 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-gray-100 hover:text-surface-dark transition-all"
+                                className="w-full py-3 px-6 bg-gray-50 text-surface-dark/60 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-gray-100 hover:text-surface-dark transition-all"
                             >
                                 Zpět
                             </button>
-                            <div className="flex-1 flex gap-3">
+                            <div className="flex flex-col sm:flex-row gap-3 w-full">
                                 <button
                                     onClick={handleSaveSelected}
-                                    className="flex-1 py-3 px-4 bg-white border-2 border-surface-dark/10 text-surface-dark rounded-xl text-xs font-black uppercase tracking-widest hover:border-neon-orange hover:text-neon-orange transition-all active:scale-95"
+                                    className="w-full sm:flex-1 py-3 px-4 bg-white border-2 border-surface-dark/10 text-surface-dark rounded-xl text-[10px] sm:text-xs font-black uppercase tracking-widest hover:border-neon-orange hover:text-neon-orange transition-all active:scale-95"
                                 >
                                     Uložit vybrané
                                 </button>
                                 <button
                                     onClick={handleAcceptAll}
-                                    className="flex-1 py-3 px-4 neon-gradient text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg hover:shadow-neon-glow transition-all active:scale-95"
+                                    className="w-full sm:flex-1 py-3 px-4 neon-gradient text-white rounded-xl text-[10px] sm:text-xs font-black uppercase tracking-widest shadow-lg hover:shadow-neon-glow transition-all active:scale-95"
                                 >
                                     Přijmout vše
                                 </button>

@@ -28,6 +28,8 @@ export interface Service {
   imageScale?: number;
   imageOpacity?: number; // 0-100
   imageRotation?: number; // degrees
+  locations?: string[]; // Místa konání (např. "Sportcentrum Vizovice")
+  prices?: { label: string; price: string }[]; // Ceník (např. { label: "student", price: "350 Kč" })
 }
 
 export interface GalleryItem {
@@ -102,6 +104,14 @@ export interface OrderFormFieldSetting {
   enabled: boolean;
   required: boolean;
   label: string;
+}
+
+export interface BookingLink {
+  id: string;
+  name: string;
+  subtitle?: string;
+  url: string;
+  icon?: 'person' | 'group' | 'circle';
 }
 
 export interface DecorativeImage {
@@ -290,6 +300,7 @@ export interface SiteData {
     note: OrderFormFieldSetting;
     servicesSelection: OrderFormFieldSetting;
     consentText: string;
+    bookingLinks: BookingLink[];
   };
   appearance: AppearanceSettings;
   integrations: IntegrationsSettings;

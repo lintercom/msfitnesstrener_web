@@ -9,7 +9,7 @@ const HeroSection: React.FC = () => {
     const { data } = useData();
 
     return (
-        <section className="relative pt-32 pb-0 md:pt-40 md:pb-0 overflow-hidden flex items-center bg-noise bg-background min-h-[65vh] lg:min-h-[70vh] shadow-premium z-20">
+        <section className="relative pt-32 pb-24 md:pt-40 md:pb-0 overflow-hidden flex items-center bg-noise bg-background min-h-[65vh] lg:min-h-[70vh] shadow-premium z-20">
             <BlueprintGrid className="opacity-[0.1]" />
 
             <div
@@ -109,14 +109,43 @@ const DetailedServices: React.FC = () => {
                                             )}
                                         </h2>
 
-                                        <p className="text-surface-dark/90 font-medium text-sm lg:text-lg leading-relaxed mb-6 md:mb-10 max-w-2xl whitespace-pre-line">
+                                        <p className="text-surface-dark/90 font-medium text-sm lg:text-lg leading-relaxed mb-6 md:mb-8 max-w-2xl whitespace-pre-line">
                                             {service.description}
                                         </p>
+
+                                        {/* LOKACE A CENÍK */}
+                                        {(service.locations?.length || service.prices?.length) && (
+                                            <div className="space-y-4 pt-4 border-t border-surface-dark/10">
+                                                {/* Místa konání */}
+                                                {service.locations && service.locations.length > 0 && (
+                                                    <div className="flex items-start gap-3">
+                                                        <span className="text-lg">📍</span>
+                                                        <p className="text-sm font-bold text-surface-dark/70">
+                                                            {service.locations.join(' | ')}
+                                                        </p>
+                                                    </div>
+                                                )}
+
+                                                {/* Ceník */}
+                                                {service.prices && service.prices.length > 0 && (
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {service.prices.map((p, idx) => (
+                                                            <div key={idx} className="inline-flex items-center gap-2 px-4 py-2 bg-surface-dark/5 rounded-full">
+                                                                <span className="text-[10px] font-black uppercase tracking-wider text-surface-dark/50">{p.label}</span>
+                                                                <span className="text-sm font-black text-surface-dark">{p.price}</span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="flex flex-wrap items-center gap-6 md:gap-10 mt-auto pt-10">
                                         <ReactRouterDom.Link
-                                            to={`/objednat?service=${service.id}`}
+                                            to={service.id === 's-skupinovy-trenink'
+                                                ? `/objednat?tab=existing`
+                                                : `/objednat?service=${service.id}`}
                                             className="inline-flex items-center gap-4 md:gap-5 group/cta w-fit"
                                         >
                                             <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-surface-dark text-white flex items-center justify-center border-0 transition-all duration-500 shadow-lg transform group-hover/cta:rotate-12 group-hover/cta:neon-gradient group-hover/cta:shadow-neon-glow group-hover/cta:scale-110">

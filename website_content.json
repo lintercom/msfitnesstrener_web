@@ -172,7 +172,30 @@
       ],
       "order": 1,
       "fields": [],
-      "imageUrl": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1470&auto=format&fit=crop"
+      "imageUrl": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1470&auto=format&fit=crop",
+      "locations": [
+        "HappyGym Chrastěšov",
+        "Sportcentrum Vizovice",
+        "Dynamic Fitness Studio Zlín"
+      ],
+      "prices": [
+        {
+          "label": "Trénink 1v1",
+          "price": "550 Kč/osoba"
+        },
+        {
+          "label": "Trénink 1v2",
+          "price": "450 Kč/osoba"
+        },
+        {
+          "label": "Student 1v1",
+          "price": "350 Kč"
+        },
+        {
+          "label": "Student 1v2",
+          "price": "350 Kč"
+        }
+      ]
     },
     {
       "id": "s-sportovni-priprava",
@@ -191,7 +214,16 @@
       ],
       "order": 2,
       "fields": [],
-      "imageUrl": "https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=1470&auto=format&fit=crop"
+      "imageUrl": "https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=1470&auto=format&fit=crop",
+      "locations": [
+        "Sportcentrum Vizovice"
+      ],
+      "prices": [
+        {
+          "label": "Trénink",
+          "price": "350 Kč/osoba"
+        }
+      ]
     },
     {
       "id": "s-zavodni-priprava",
@@ -209,7 +241,21 @@
       ],
       "order": 3,
       "fields": [],
-      "imageUrl": "https://images.unsplash.com/photo-1524646349956-1590eacfa324?q=80&w=1470&auto=format&fit=crop"
+      "imageUrl": "https://images.unsplash.com/photo-1524646349956-1590eacfa324?q=80&w=1470&auto=format&fit=crop",
+      "locations": [
+        "HappyGym Chrastěšov",
+        "Sportcentrum Vizovice"
+      ],
+      "prices": [
+        {
+          "label": "Trénink",
+          "price": "700 Kč/osoba"
+        },
+        {
+          "label": "Student",
+          "price": "500 Kč"
+        }
+      ]
     },
     {
       "id": "s-skupinovy-trenink",
@@ -228,7 +274,16 @@
       ],
       "order": 4,
       "fields": [],
-      "imageUrl": "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1470&auto=format&fit=crop"
+      "imageUrl": "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1470&auto=format&fit=crop",
+      "locations": [
+        "Sportcentrum Vizovice"
+      ],
+      "prices": [
+        {
+          "label": "Vstup",
+          "price": "200 Kč/osoba"
+        }
+      ]
     },
     {
       "id": "s-kruhovy-trenink",
@@ -247,7 +302,16 @@
       ],
       "order": 5,
       "fields": [],
-      "imageUrl": "https://images.unsplash.com/photo-1434608519344-49d77a699e1d?q=80&w=1474&auto=format&fit=crop"
+      "imageUrl": "https://images.unsplash.com/photo-1434608519344-49d77a699e1d?q=80&w=1474&auto=format&fit=crop",
+      "locations": [
+        "Sportcentrum Vizovice"
+      ],
+      "prices": [
+        {
+          "label": "Vstup",
+          "price": "150 Kč/osoba"
+        }
+      ]
     }
   ],
   "gallery": [
@@ -425,7 +489,28 @@
       "required": true,
       "label": "VYBERTE SLUŽBY"
     },
-    "consentText": "Souhlasím se zpracováním osobních údajů"
+    "consentText": "Souhlasím se zpracováním osobních údajů",
+    "bookingLinks": [
+      {
+        "id": "bl1",
+        "name": "Osobní trénink",
+        "url": "https://martin-stastny.reenio.cz/cs/service/osobni-trenink-51708",
+        "icon": "person"
+      },
+      {
+        "id": "bl2",
+        "name": "Skupinový trénink",
+        "subtitle": "Kettlebell Total Steel",
+        "url": "https://martin-stastny.reenio.cz/cs/service/kettlebell-total-steel-skupinova-lekce-53736",
+        "icon": "group"
+      },
+      {
+        "id": "bl3",
+        "name": "Kruhový trénink",
+        "url": "https://martin-stastny.reenio.cz/cs/service/kruhovy-trenink-pro-sportovce-10-18-let-54176",
+        "icon": "circle"
+      }
+    ]
   },
   "appearance": {
     "colors": {

@@ -1,6 +1,10 @@
 RewriteEngine On
 RewriteBase /
 
+# Charset - UTF-8 pro správné kódování
+AddDefaultCharset UTF-8
+AddCharset UTF-8 .html .css .js .json .xml
+
 # Bezpečnost - zakázat přístup k citlivým souborům
 <FilesMatch "\.(htaccess|htpasswd|ini|log|sh|sql|bak)$">
     Order Allow,Deny
