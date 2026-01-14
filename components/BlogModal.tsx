@@ -96,7 +96,7 @@ const BlogModal: React.FC<BlogModalProps> = ({
                 {/* Main Content Area */}
                 <div className="flex-grow flex flex-col overflow-hidden bg-surface-light md:w-[78%]">
                     {/* Integrated Header - Full Width Stickiness */}
-                    <div className="px-6 md:px-16 py-6 border-b border-surface-dark/5 flex justify-between items-center relative z-20 bg-surface-light/80 backdrop-blur-md">
+                    <div className="px-6 md:px-16 py-6 border-b border-surface-dark/5 flex justify-between items-center relative z-20 bg-surface-light/90 md:bg-surface-light/80 md:backdrop-blur-md">
                         <div className="flex items-center gap-8">
                             <ReactRouterDom.Link
                                 to="/"
@@ -142,20 +142,20 @@ const BlogModal: React.FC<BlogModalProps> = ({
 
                     {/* Content Scroll Area */}
                     <div className="flex-grow overflow-y-auto custom-scrollbar bg-surface-light scroll-smooth">
-                        <div className="max-w-6xl mx-auto px-6 md:px-12 py-12 md:py-24 lg:py-32">
+                        <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-12 py-10 sm:py-12 md:py-24 lg:py-32">
                             {/* Titulek */}
-                            <h1 className="text-4xl md:text-6xl font-black text-surface-dark uppercase tracking-tighter leading-[0.95] mb-10">
+                            <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-surface-dark uppercase tracking-tighter leading-[0.98] sm:leading-[0.95] mb-8 sm:mb-10">
                                 {post.title}
                             </h1>
 
                             <div className="prose prose-slate max-w-none">
                                 {/* Perex */}
-                                <p className="text-xl md:text-2xl text-surface-dark/80 font-bold mb-14 leading-tight italic border-l-8 border-neon-blaze/20 pl-8">
+                                <p className="text-lg sm:text-xl md:text-2xl text-surface-dark/80 font-bold mb-10 sm:mb-14 leading-tight italic border-l-8 border-neon-blaze/20 pl-6 sm:pl-8">
                                     {post.excerpt}
                                 </p>
 
                                 {/* Obsah článku */}
-                                <div className="text-surface-dark/70 text-lg md:text-xl leading-relaxed space-y-10 font-medium pb-20">
+                                <div className="text-surface-dark/70 text-base sm:text-lg md:text-xl leading-relaxed space-y-8 sm:space-y-10 font-medium pb-16 sm:pb-20">
                                     {post.content.split('\n').map((para, i) => (
                                         para.trim() ? <p key={i}>{para}</p> : null
                                     ))}
@@ -163,12 +163,12 @@ const BlogModal: React.FC<BlogModalProps> = ({
                             </div>
 
                             {/* Zjednodušená patička - Tlačítko VYZKOUŠET */}
-                            <div className="mt-12 py-20 border-t border-surface-dark/5 flex flex-col items-center">
+                            <div className="mt-12 py-14 sm:py-20 border-t border-surface-dark/5 flex flex-col items-center">
                                 <div className="w-16 h-1 neon-gradient rounded-full mb-12 opacity-30"></div>
                                 <ReactRouterDom.Link
                                     to="/objednat"
                                     onClick={handleClose}
-                                    className="px-20 py-6 neon-gradient text-white rounded-full font-black uppercase tracking-[0.2em] shadow-2xl hover:shadow-neon-glow hover:scale-[1.05] active:scale-95 transition-all text-base min-w-[300px] text-center"
+                                    className="w-full max-w-sm px-10 sm:px-16 py-5 sm:py-6 neon-gradient text-white rounded-full font-black uppercase tracking-[0.2em] shadow-2xl hover:shadow-neon-glow sm:hover:scale-[1.05] active:scale-95 transition-all text-base text-center"
                                 >
                                     VYZKOUŠET
                                 </ReactRouterDom.Link>

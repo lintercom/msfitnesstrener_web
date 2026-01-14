@@ -13,6 +13,7 @@ AddCharset UTF-8 .html .css .js .json .xml
 
 # API endpoints - PHP
 RewriteRule ^api/send-email$ api/send-email.php [L,QSA]
+RewriteRule ^api/save-content$ api/save-content.php [L,QSA]
 
 # Pokud soubor nebo složka existuje, použij je přímo
 RewriteCond %{REQUEST_FILENAME} !-f

@@ -187,7 +187,7 @@ const OrderPage: React.FC = () => {
         }
     };
 
-    const inputClasses = "w-full bg-white border border-surface-dark/10 rounded-2xl p-5 text-surface-dark placeholder-surface-dark/30 focus:outline-none focus:border-neon-blaze focus:ring-1 focus:ring-neon-blaze transition-all duration-300 font-medium text-lg shadow-sm";
+    const inputClasses = "w-full bg-white border border-surface-dark/10 rounded-2xl p-4 sm:p-5 text-surface-dark placeholder-surface-dark/30 focus:outline-none focus:border-neon-blaze focus:ring-1 focus:ring-neon-blaze transition-all duration-300 font-medium text-base sm:text-lg shadow-sm";
 
     const availableServices = data.services.filter(s => !formData.selectedServices.includes(s.id));
 
@@ -205,16 +205,16 @@ const OrderPage: React.FC = () => {
                 subTitle={data.pageHeroes.order.description}
             />
 
-            <div className="bg-surface pt-20 pb-20 md:pt-32 md:pb-32 relative overflow-hidden">
+            <div className="bg-surface pt-16 pb-16 sm:pt-20 sm:pb-20 md:pt-32 md:pb-32 relative overflow-hidden">
                 <BlueprintGrid className="opacity-[0.03] grayscale invert" />
 
-                <div className="container mx-auto px-6 relative z-10">
+                <div className="container mx-auto px-4 sm:px-6 relative z-10">
                     {/* TABS - Skryto při úspěšném odeslání */}
                     {status !== 'success' && (
                         <div className="flex justify-center mb-16 animate-in fade-in duration-500">
-                            <div className="bg-surface-light/40 backdrop-blur-md p-1.5 rounded-full border border-surface-dark/5 flex items-center shadow-xl">
-                                <button onClick={() => setActiveTab('new')} className={`px-8 md:px-12 py-3.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-[0.3em] transition-all duration-500 ${activeTab === 'new' ? 'neon-gradient text-white shadow-lg' : 'text-surface-dark/65 hover:text-surface-dark'}`}>Nová spolupráce</button>
-                                <button onClick={() => setActiveTab('existing')} className={`px-8 md:px-12 py-3.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-[0.3em] transition-all duration-500 ${activeTab === 'existing' ? 'neon-gradient text-white shadow-lg' : 'text-surface-dark/65 hover:text-surface-dark'}`}>Pro klienty</button>
+                            <div className="bg-surface-light/40 backdrop-blur-sm md:backdrop-blur-md p-1.5 rounded-full border border-surface-dark/5 flex items-center shadow-xl max-w-full">
+                                <button onClick={() => setActiveTab('new')} className={`px-6 sm:px-8 md:px-12 py-3.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-[0.25em] sm:tracking-[0.3em] transition-all duration-500 ${activeTab === 'new' ? 'neon-gradient text-white shadow-lg' : 'text-surface-dark/65 hover:text-surface-dark'}`}>Nová spolupráce</button>
+                                <button onClick={() => setActiveTab('existing')} className={`px-6 sm:px-8 md:px-12 py-3.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-[0.25em] sm:tracking-[0.3em] transition-all duration-500 ${activeTab === 'existing' ? 'neon-gradient text-white shadow-lg' : 'text-surface-dark/65 hover:text-surface-dark'}`}>Pro klienty</button>
                             </div>
                         </div>
                     )}

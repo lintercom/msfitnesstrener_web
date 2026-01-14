@@ -27,7 +27,14 @@ return [
         'allowed_origins' => [
             'https://martin-stastny.cz',
             'https://www.martin-stastny.cz',
-            'http://localhost:3000' // Pro lokální vývoj
+            'http://localhost:3000', // Pro lokální vývoj
+            'http://localhost:5173'  // Pro Vite dev server
         ]
+    ],
+
+    // Admin token pro ukládání obsahu
+    // ⚠️ DŮLEŽITÉ: Tento token musí být stejný jako VITE_ADMIN_TOKEN v .env souboru!
+    'admin' => [
+        'token' => 'cc9d77a0ef3b71ee98a5b32e149297b3e12ce5717c87975bc4126b4dea2d5b1e'
     ]
 ];

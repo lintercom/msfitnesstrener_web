@@ -33,7 +33,7 @@ const AboutMePage: React.FC = () => {
 
                         <div className="flex flex-col lg:flex-row">
                             {/* Visual Side */}
-                            <div className="lg:w-[35%] relative min-h-[500px] lg:min-h-0 bg-gray-50">
+                            <div className="lg:w-[35%] relative min-h-[340px] sm:min-h-[420px] lg:min-h-0 bg-gray-50">
                                 {data.general.heroImage ? (
                                     <img
                                         src={data.general.heroImage}
@@ -81,7 +81,7 @@ const AboutMePage: React.FC = () => {
                                     <div className="flex items-center pt-8 border-t border-surface-dark/5">
                                         <ReactRouterDom.Link
                                             to="/objednat"
-                                            className="px-12 py-5 neon-gradient text-white rounded-full text-[11px] font-black uppercase tracking-[0.4em] shadow-xl hover:shadow-neon-glow hover:scale-105 transition-all text-center"
+                                            className="w-full sm:w-auto px-8 sm:px-12 py-4 sm:py-5 neon-gradient text-white rounded-full text-[10px] sm:text-[11px] font-black uppercase tracking-[0.35em] sm:tracking-[0.4em] shadow-xl hover:shadow-neon-glow sm:hover:scale-105 transition-all text-center"
                                         >
                                             ZAČÁTEK SPOLUPRÁCE
                                         </ReactRouterDom.Link>

@@ -93,7 +93,7 @@ const GalleryModal: React.FC<GalleryModalProps> = ({
 
     return (
         <div 
-            className={`fixed inset-0 bg-background/95 backdrop-blur-2xl flex items-center justify-center z-[200] md:p-10 transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`} 
+            className={`fixed inset-0 bg-background/95 backdrop-blur-sm md:backdrop-blur-2xl flex items-center justify-center z-[200] md:p-10 transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`} 
             onClick={handleClose}
         >
             <div 
@@ -115,13 +115,13 @@ const GalleryModal: React.FC<GalleryModalProps> = ({
                             <>
                                 <button 
                                     onClick={goToPreviousImage} 
-                                    className="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/40 backdrop-blur-md text-white flex items-center justify-center border border-white/10 active:bg-neon-pink transition-all z-30 hover:scale-110" 
+                                    className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 w-11 h-11 md:w-12 md:h-12 rounded-full bg-black/40 backdrop-blur-sm md:backdrop-blur-md text-white flex items-center justify-center border border-white/10 active:bg-neon-pink transition-all z-30 md:hover:scale-110" 
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
                                 </button>
                                 <button 
                                     onClick={goToNextImage} 
-                                    className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/40 backdrop-blur-md text-white flex items-center justify-center border border-white/10 active:bg-neon-pink transition-all z-30 hover:scale-110" 
+                                    className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 w-11 h-11 md:w-12 md:h-12 rounded-full bg-black/40 backdrop-blur-sm md:backdrop-blur-md text-white flex items-center justify-center border border-white/10 active:bg-neon-pink transition-all z-30 md:hover:scale-110" 
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
                                 </button>

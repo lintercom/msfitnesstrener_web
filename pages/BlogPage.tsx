@@ -28,22 +28,22 @@ const BlogCard: React.FC<{
     </div>
 
     {/* Content Section - Expanded to 65% Width on Desktop */}
-    <div className="w-full md:w-[65%] p-10 lg:p-16 flex flex-col justify-center relative bg-surface-light">
+    <div className="w-full md:w-[65%] p-6 sm:p-8 lg:p-16 flex flex-col justify-center relative bg-surface-light">
       <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.3em] text-surface-dark/65 mb-6">
         <span>{date}</span>
         <span className="w-1.5 h-1.5 rounded-full neon-gradient"></span>
         <span>{readTime} čtení</span>
       </div>
 
-      <h3 className="text-3xl lg:text-5xl font-black text-surface-dark uppercase tracking-tighter mb-6 leading-[0.9] group-hover:ms-gradient-text transition-all duration-500">
+      <h3 className="text-2xl sm:text-3xl lg:text-5xl font-black text-surface-dark uppercase tracking-tighter mb-5 sm:mb-6 leading-[0.95] group-hover:ms-gradient-text transition-all duration-500">
         {title}
       </h3>
 
-      <p className="text-surface-dark/75 font-medium text-base lg:text-xl leading-relaxed mb-10 max-w-2xl">
+      <p className="text-surface-dark/75 font-medium text-sm sm:text-base lg:text-xl leading-relaxed mb-8 sm:mb-10 max-w-2xl">
         {excerpt}
       </p>
 
-      <div className="mt-auto pt-8 border-t border-surface-dark/5 flex items-center gap-4 md:gap-6 group/action">
+      <div className="mt-auto pt-6 sm:pt-8 border-t border-surface-dark/5 flex items-center gap-4 md:gap-6 group/action">
         <div
           className="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-surface-dark text-white flex items-center justify-center border border-surface-dark/10 transition-all duration-500 shadow-lg transform group-hover/action:rotate-6 group-hover/action:neon-gradient group-hover/action:shadow-neon-glow group-hover/action:border-transparent"
         >
@@ -51,7 +51,7 @@ const BlogCard: React.FC<{
             <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7-7 7" />
           </svg>
         </div>
-        <span className="text-xs md:text-sm font-black uppercase tracking-[0.3em] ms-gradient-text transition-all duration-500 group-hover/action:tracking-[0.4em]">
+        <span className="text-[10px] sm:text-xs md:text-sm font-black uppercase tracking-[0.25em] sm:tracking-[0.3em] ms-gradient-text transition-all duration-500 group-hover/action:tracking-[0.35em] sm:group-hover/action:tracking-[0.4em]">
           CELÝ ČLÁNEK
         </span>
       </div>
@@ -77,7 +77,7 @@ const BlogPage: React.FC = () => {
         subTitle={data.pageHeroes.blog.description}
       />
 
-      <div className="pt-20 pb-20 md:pt-32 md:pb-32 bg-surface relative overflow-hidden">
+      <div className="pt-16 pb-16 sm:pt-20 sm:pb-20 md:pt-32 md:pb-32 bg-surface relative overflow-hidden">
         <BlueprintGrid className="opacity-[0.03] grayscale invert" />
 
         <div className="w-full px-4 md:px-8 lg:px-12 relative z-10">

@@ -7,9 +7,64 @@ import SEO from '../components/SEO';
 
 const HeroSection: React.FC = () => {
     const { data } = useData();
+    const heroDecoration = data.homeDecorations?.hero;
+    const heroText = data.homeDecorations?.heroText;
+
+    const getHeroDecorationPosition = () => {
+        if (!heroDecoration) return {};
+
+        const position: React.CSSProperties = {};
+
+        if (heroDecoration.originX === 'left') {
+            position.left = `${heroDecoration.offsetX}px`;
+        } else {
+            position.right = `${heroDecoration.offsetX}px`;
+        }
+
+        if (heroDecoration.originY === 'top') {
+            position.top = `${heroDecoration.offsetY}px`;
+        } else {
+            // Obrazek má sedět na spodní hraně hero sekce
+            position.bottom = `0px`;
+        }
+
+        return position;
+    };
+
+    const getHeroDecorationShadow = () => {
+        if (!heroDecoration || heroDecoration.shadow === 'none') return 'none';
+        if (heroDecoration.shadow === 'light') {
+            return '0 35px 80px rgba(255,255,255,0.35)';
+        }
+        // default dark
+        return '0 40px 120px rgba(0,0,0,0.75)';
+    };
+
+    const getHeroTextPosition = () => {
+        if (!heroText) return {};
+        const position: React.CSSProperties = {};
+
+        if (heroText.originX === 'left') position.left = `${heroText.offsetX}px`;
+        else position.right = `${heroText.offsetX}px`;
+
+        if (heroText.originY === 'top') position.top = `${heroText.offsetY}px`;
+        else position.bottom = `${heroText.offsetY}px`;
+
+        return position;
+    };
+
+    const hexToRgba = (hex: string, alpha01: number) => {
+        const clean = (hex || '').replace('#', '').trim();
+        if (clean.length !== 6) return `rgba(15, 23, 42, ${alpha01})`;
+        const r = parseInt(clean.slice(0, 2), 16);
+        const g = parseInt(clean.slice(2, 4), 16);
+        const b = parseInt(clean.slice(4, 6), 16);
+        return `rgba(${r}, ${g}, ${b}, ${alpha01})`;
+    };
 
     return (
-        <section className="relative pt-32 pb-24 md:pt-40 md:pb-0 overflow-hidden flex items-center bg-noise bg-background min-h-[65vh] lg:min-h-[70vh] shadow-premium z-20">
+        <div className="relative overflow-visible">
+        <section className="relative pt-24 sm:pt-32 pb-16 sm:pb-24 md:pt-40 md:pb-0 overflow-hidden flex items-center bg-noise bg-background min-h-[65vh] lg:min-h-[70vh] shadow-premium z-20">
             <BlueprintGrid className="opacity-[0.1]" />
 
             <div
@@ -22,7 +77,28 @@ const HeroSection: React.FC = () => {
                 }}
             ></div>
 
-            <div className="w-full px-6 md:px-12 2xl:px-0 2xl:pl-[12%] 3xl:pl-[15%] relative z-10 transition-all duration-700">
+            {heroDecoration?.enabled && heroDecoration.imageUrl && (
+                <div
+                    className="absolute z-0 pointer-events-none"
+                    style={{
+                        ...getHeroDecorationPosition(),
+                        width: `${heroDecoration.scale}%`,
+                        opacity: heroDecoration.opacity / 100,
+                        transform: `rotate(${heroDecoration.rotation}deg)`,
+                        transformOrigin: `${heroDecoration.originX} ${heroDecoration.originY}`,
+                        filter: 'drop-shadow(0 18px 45px rgba(0,0,0,0.45))',
+                        boxShadow: getHeroDecorationShadow(),
+                    }}
+                >
+                    <img
+                        src={heroDecoration.imageUrl}
+                        alt="Hero dekorace"
+                        className="w-full h-auto object-contain select-none pointer-events-none"
+                    />
+                </div>
+            )}
+
+            <div className="w-full px-4 sm:px-6 md:px-12 2xl:px-0 2xl:pl-[12%] 3xl:pl-[15%] relative z-10 transition-all duration-700">
                 <div className="flex flex-col items-center md:items-start text-center md:text-left max-w-4xl">
 
                     <div className="mb-8 md:mb-12 w-full relative">
@@ -50,6 +126,34 @@ const HeroSection: React.FC = () => {
                 </div>
             </div>
         </section>
+
+        {/* Textový blok je ve vrstvě nad hero sekcí a může přesahovat dolní hranu */}
+        {heroText?.enabled && heroText.text && (
+            <div
+                className="absolute z-30"
+                style={{
+                    ...getHeroTextPosition(),
+                    width: `${heroText.width}%`,
+                    maxWidth: '720px',
+                    height: heroText.height && heroText.height > 0 ? `${heroText.height}px` : undefined,
+                }}
+            >
+                <div
+                    className="backdrop-blur-sm border border-white/10 rounded-[1.5rem] md:rounded-[2rem] px-6 py-5 md:px-7 md:py-6 shadow-[0_25px_80px_rgba(0,0,0,0.45)]"
+                    style={{
+                        backgroundColor: hexToRgba(heroText.bgColor || '#0F172A', Math.max(0, Math.min(100, heroText.bgOpacity ?? 65)) / 100),
+                        fontFamily: heroText.font === 'heading' ? data.appearance.fonts.heading : data.appearance.fonts.sans,
+                        height: heroText.height && heroText.height > 0 ? '100%' : undefined,
+                        overflow: heroText.height && heroText.height > 0 ? 'hidden' : undefined,
+                    }}
+                >
+                    <p className="text-white/85 font-semibold text-sm md:text-base leading-relaxed">
+                        {heroText.text}
+                    </p>
+                </div>
+            </div>
+        )}
+        </div>
     );
 };
 

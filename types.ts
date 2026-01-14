@@ -136,6 +136,21 @@ export interface SectionDecoration {
   scale: number; // Percentage (Size)
   opacity: number; // 0-100
   rotation: number; // degrees
+  shadow?: 'light' | 'dark' | 'none'; // Shadow style under the image
+}
+
+export interface HeroTextOverlay {
+  enabled: boolean;
+  text: string;
+  originX: 'left' | 'right';
+  originY: 'top' | 'bottom';
+  offsetX: number;
+  offsetY: number;
+  width: number; // Percentage (width of the block)
+  height: number; // Pixels (0 = auto)
+  bgColor: string; // Hex color, e.g. #0F172A
+  bgOpacity: number; // 0-100 (background only)
+  font: 'sans' | 'heading';
 }
 
 export interface GeneralSettings {
@@ -282,6 +297,7 @@ export interface SiteData {
     services: SectionDecoration;
     process: SectionDecoration;
     gallery: SectionDecoration;
+    heroText: HeroTextOverlay;
   };
   navigation: NavigationSettings;
   services: Service[];

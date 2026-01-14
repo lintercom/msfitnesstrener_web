@@ -49,12 +49,12 @@ const GalleryPage: React.FC = () => {
                 subTitle={data.pageHeroes.gallery.description}
             />
 
-            <div className="bg-surface pt-20 pb-20 md:pt-32 md:pb-32 relative overflow-hidden">
+            <div className="bg-surface pt-16 pb-16 sm:pt-20 sm:pb-20 md:pt-32 md:pb-32 relative overflow-hidden">
                 <BlueprintGrid className="opacity-[0.03] grayscale invert" />
 
-                <div className="container mx-auto px-6 relative z-10">
+                <div className="container mx-auto px-4 sm:px-6 relative z-10">
                     {/* Grid layout ensures uniform height for all cards in a row */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 gap-y-16 md:gap-y-24 lg:gap-y-32">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 gap-y-10 sm:gap-y-16 md:gap-y-24 lg:gap-y-32">
                         {filteredItems.map((item, index) => {
                             return (
                                 <div
@@ -76,7 +76,7 @@ const GalleryPage: React.FC = () => {
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 group-hover:opacity-20 transition-opacity"></div>
                                     </div>
 
-                                    <div className="p-10 flex flex-col flex-grow relative bg-surface-light">
+                                    <div className="p-6 sm:p-8 lg:p-10 flex flex-col flex-grow relative bg-surface-light">
                                         <div className="w-12 h-1 bg-surface-dark/5 mb-6 group-hover:w-full group-hover:neon-gradient transition-all duration-700 rounded-full"></div>
 
                                         <div className="flex flex-col gap-1 mb-6">
@@ -85,7 +85,7 @@ const GalleryPage: React.FC = () => {
                                             </h3>
                                         </div>
 
-                                        <p className="text-surface-dark/75 font-medium text-base line-clamp-3 mb-10 leading-relaxed">
+                                        <p className="text-surface-dark/75 font-medium text-sm sm:text-base line-clamp-3 mb-8 sm:mb-10 leading-relaxed">
                                             {item.description}
                                         </p>
 

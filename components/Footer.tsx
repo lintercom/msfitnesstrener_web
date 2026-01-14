@@ -17,7 +17,7 @@ const Footer: React.FC = () => {
       {/* Top Accent Gradient Line */}
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-neon-orange/20 to-transparent"></div>
 
-      <div className="container mx-auto px-6 lg:px-12 py-24 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-16 sm:py-20 lg:py-24 relative z-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-16 lg:gap-8 text-center sm:text-left">
 
           {/* Column 1: Brand */}

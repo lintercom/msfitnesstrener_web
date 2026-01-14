@@ -56,16 +56,74 @@ const AdminDashboard: React.FC = () => {
     }
   }, [localData, data]);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!localData) return;
     setSaveStatus('saving');
-    setTimeout(() => {
+    
+    try {
+      // Uložit do localStorage (pro rychlý přístup)
       setGlobalData(localData);
+      
+      // Pokusit se uložit na server
+      const apiConfig = (await import('../../src/config/api.config')).apiConfig;
+      
+      if (apiConfig.adminToken) {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), apiConfig.timeout);
+          
+          const response = await fetch(apiConfig.endpoints.saveContent, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Admin-Token': apiConfig.adminToken
+            },
+            // Token posíláme i v body (některé hostingy blokují custom headers)
+            body: JSON.stringify({ data: localData, adminToken: apiConfig.adminToken }),
+            signal: controller.signal
+          });
+          
+          clearTimeout(timeoutId);
+          
+          if (response.ok) {
+            const result = await response.json();
+            if (result.success) {
+              showToast('HUB AKTUALIZOVÁN A NAHRÁN NA SERVER', 'success');
+            } else {
+              showToast('Uloženo lokálně, ale server vrátil chybu', 'error');
+            }
+          } else {
+            let details = '';
+            try {
+              const errJson = await response.json();
+              details = errJson?.error || errJson?.message || '';
+            } catch {
+              try {
+                details = (await response.text()).slice(0, 200);
+              } catch {
+                details = '';
+              }
+            }
+            throw new Error(`Server error: ${response.status}${details ? ` - ${details}` : ''}`);
+          }
+        } catch (serverError) {
+          console.warn('Failed to save to server:', serverError);
+          const msg = serverError instanceof Error ? serverError.message : 'Server nedostupný';
+          showToast(`Uloženo lokálně, ${msg}`, 'error');
+        }
+      } else {
+        // Pokud není admin token, uložit jen lokálně
+        showToast('HUB AKTUALIZOVÁN (lokálně)', 'success');
+      }
+      
       setHasUnsavedChanges(false);
       setSaveStatus('saved');
-      showToast('HUB AKTUALIZOVÁN', 'success');
       setTimeout(() => setSaveStatus('idle'), 2000);
-    }, 1000);
+    } catch (error) {
+      console.error('Save error:', error);
+      showToast('Chyba při ukládání', 'error');
+      setSaveStatus('idle');
+    }
   };
 
   const handleHeaderClick = () => {

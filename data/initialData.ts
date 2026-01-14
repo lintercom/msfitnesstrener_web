@@ -10,13 +10,28 @@ const defaultDecoration: SectionDecoration = {
   offsetY: 0,
   scale: 40,
   opacity: 50,
-  rotation: 0
+  rotation: 0,
+  shadow: 'dark'
+};
+
+const defaultHeroText = {
+  enabled: true,
+  text: 'Pomůžu ti začít trénovat správně, bezpečně a efektivně – podle tvých cílů, kondice a možností',
+  originX: 'left' as const,
+  originY: 'bottom' as const,
+  offsetX: 24,
+  offsetY: 96,
+  width: 46,
+  height: 0,
+  bgColor: '#0F172A',
+  bgOpacity: 65,
+  font: 'sans' as const,
 };
 
 export const initialData: SiteData = {
   general: {
     companyName: "Martin Šťastný",
-    logo: "/msfitnesstrener_web/images/logo.png",
+    logo: "/images/logo.png",
     logoScale: 100,
     heroImage: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80",
     favicon: "/favicon.ico",
@@ -67,6 +82,7 @@ export const initialData: SiteData = {
     services: { ...defaultDecoration },
     process: { ...defaultDecoration },
     gallery: { ...defaultDecoration },
+    heroText: { ...defaultHeroText },
   },
   navigation: {
     headerNavLinks: [
@@ -284,7 +300,8 @@ export const initialData: SiteData = {
     phone: { enabled: true, required: true, label: 'Telefon' },
     note: { enabled: true, required: true, label: 'Tvá motivace' },
     servicesSelection: { enabled: true, required: true, label: 'VYBERTE SLUŽBY' },
-    consentText: 'Souhlasím se zpracováním osobních údajů'
+    consentText: 'Souhlasím se zpracováním osobních údajů',
+    bookingLinks: []
   },
   appearance: {
     colors: {

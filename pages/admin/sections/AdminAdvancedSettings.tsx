@@ -99,6 +99,25 @@ const GlobalTab: React.FC<AdminSectionProps> = ({ data, setData, showToast }) =>
         setData(prev => prev ? { ...prev, general: { ...prev.general, socials: { ...prev.general.socials, [name]: value } } } : null);
     };
 
+    const handleHeroDecorationChange = (field: keyof SiteData['homeDecorations']['hero'], value: any) => {
+        setData((prev: SiteData | null) => prev ? {
+            ...prev,
+            homeDecorations: {
+                ...prev.homeDecorations,
+                hero: {
+                    ...prev.homeDecorations.hero,
+                    [field]: value
+                }
+            }
+        } : null);
+    };
+
+    const axisLabels = (originX: 'left' | 'right', originY: 'top' | 'bottom') => {
+        const x = originX === 'left' ? 'Doprava' : 'Doleva';
+        const y = originY === 'top' ? 'Dolů' : 'Nahoru';
+        return { x, y };
+    };
+
     const tabs = [
         { id: 'identity', label: 'Identita' },
         { id: 'media', label: 'Média' },
@@ -123,23 +142,150 @@ const GlobalTab: React.FC<AdminSectionProps> = ({ data, setData, showToast }) =>
             )}
 
             {activeSubTab === 'media' && (
-                <SettingCard title="Loga & Grafika">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <ImageUploader
-                            label="Logo Projektu"
-                            imageUrl={data.general.logo}
-                            onImageChange={(url) => setData(prev => prev ? { ...prev, general: { ...prev.general, logo: url || '' } } : null)}
-                            showToast={showToast}
-                        />
-                        <AdminFormField label="Velikost loga (%)" htmlFor="logoScale">
-                            <input type="range" id="logoScale" name="logoScale" min="20" max="200" value={data.general.logoScale || 100} onChange={handleGeneralChange} className="w-full accent-neon-blaze" />
-                            <div className="text-right text-sm font-bold text-surface-dark">{data.general.logoScale || 100}%</div>
-                        </AdminFormField>
-                        <AdminFormField label="Favicon" htmlFor="favicon">
-                            <input type="text" id="favicon" name="favicon" value={data.general.favicon} onChange={handleGeneralChange} className={baseInputClasses} />
-                        </AdminFormField>
-                    </div>
-                </SettingCard>
+                <div className="space-y-8">
+                    <SettingCard title="Loga & Základní grafika">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <ImageUploader
+                                label="Logo Projektu"
+                                imageUrl={data.general.logo}
+                                onImageChange={(url) => setData(prev => prev ? { ...prev, general: { ...prev.general, logo: url || '' } } : null)}
+                                showToast={showToast}
+                            />
+                            <AdminFormField label="Velikost loga (%)" htmlFor="logoScale">
+                                <input type="range" id="logoScale" name="logoScale" min="20" max="200" value={data.general.logoScale || 100} onChange={handleGeneralChange} className="w-full accent-neon-blaze" />
+                                <div className="text-right text-sm font-bold text-surface-dark">{data.general.logoScale || 100}%</div>
+                            </AdminFormField>
+                            <AdminFormField label="Favicon" htmlFor="favicon">
+                                <input type="text" id="favicon" name="favicon" value={data.general.favicon} onChange={handleGeneralChange} className={baseInputClasses} />
+                            </AdminFormField>
+                        </div>
+                    </SettingCard>
+
+                    <SettingCard title="Hero obrázek na hlavní stránce">
+                        <div className="space-y-6">
+                            <div className="p-4 bg-gray-50 border border-surface-dark/5 rounded-2xl flex items-center justify-between gap-4">
+                                <div>
+                                    <h5 className="text-sm font-black uppercase tracking-tight text-surface-dark">Dekorační obrázek v hero sekci</h5>
+                                    <p className="text-xs text-surface-dark/50 uppercase tracking-[0.25em] mt-1">
+                                        Jedna grafika v rohu, pozice v pixelech + velikost v %
+                                    </p>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => handleHeroDecorationChange('enabled', !data.homeDecorations.hero.enabled)}
+                                    className={`w-14 h-8 rounded-full transition-all relative ${data.homeDecorations.hero.enabled ? 'bg-neon-blaze shadow-neon-glow' : 'bg-gray-200'}`}
+                                >
+                                    <div className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow-md transition-all ${data.homeDecorations.hero.enabled ? 'left-7' : 'left-1'}`}></div>
+                                </button>
+                            </div>
+
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                <ImageUploader
+                                    label="Hero obrázek"
+                                    imageUrl={data.homeDecorations.hero.imageUrl}
+                                    onImageChange={(url) => handleHeroDecorationChange('imageUrl', url || '')}
+                                    showToast={showToast}
+                                />
+
+                                <div className="space-y-6">
+                                    <AdminFormField label="Nulový bod" htmlFor="hero-origin">
+                                        <select
+                                            id="hero-origin"
+                                            value={`${data.homeDecorations.hero.originY}-${data.homeDecorations.hero.originX}`}
+                                            onChange={(e) => {
+                                                const [originY, originX] = e.target.value.split('-') as ['top' | 'bottom', 'left' | 'right'];
+                                                handleHeroDecorationChange('originX', originX);
+                                                handleHeroDecorationChange('originY', originY);
+                                            }}
+                                            className={`${baseInputClasses} appearance-none`}
+                                        >
+                                            <option value="top-left">Levý horní roh</option>
+                                            <option value="top-right">Pravý horní roh</option>
+                                            <option value="bottom-left">Levý dolní roh</option>
+                                            <option value="bottom-right">Pravý dolní roh</option>
+                                        </select>
+                                    </AdminFormField>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <AdminFormField label={`${axisLabels(data.homeDecorations.hero.originX, data.homeDecorations.hero.originY).x} (${data.homeDecorations.hero.offsetX}px)`} htmlFor="hero-offset-x">
+                                            <input
+                                                type="range"
+                                                id="hero-offset-x"
+                                                min={-200}
+                                                max={400}
+                                                value={data.homeDecorations.hero.offsetX}
+                                                onChange={(e) => handleHeroDecorationChange('offsetX', parseInt(e.target.value, 10) || 0)}
+                                                className="w-full accent-neon-blaze"
+                                            />
+                                        </AdminFormField>
+                                        <AdminFormField label={`${axisLabels(data.homeDecorations.hero.originX, data.homeDecorations.hero.originY).y} (${data.homeDecorations.hero.offsetY}px)`} htmlFor="hero-offset-y">
+                                            <input
+                                                type="range"
+                                                id="hero-offset-y"
+                                                min={-200}
+                                                max={400}
+                                                value={data.homeDecorations.hero.offsetY}
+                                                onChange={(e) => handleHeroDecorationChange('offsetY', parseInt(e.target.value, 10) || 0)}
+                                                className="w-full accent-neon-blaze"
+                                            />
+                                        </AdminFormField>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <AdminFormField label={`Velikost (${data.homeDecorations.hero.scale}%)`} htmlFor="hero-scale">
+                                            <input
+                                                type="range"
+                                                id="hero-scale"
+                                                min={10}
+                                                max={120}
+                                                value={data.homeDecorations.hero.scale}
+                                                onChange={(e) => handleHeroDecorationChange('scale', parseInt(e.target.value, 10) || 0)}
+                                                className="w-full accent-neon-blaze"
+                                            />
+                                        </AdminFormField>
+                                        <AdminFormField label={`Průhlednost (${data.homeDecorations.hero.opacity}%)`} htmlFor="hero-opacity">
+                                            <input
+                                                type="range"
+                                                id="hero-opacity"
+                                                min={10}
+                                                max={100}
+                                                value={data.homeDecorations.hero.opacity}
+                                                onChange={(e) => handleHeroDecorationChange('opacity', parseInt(e.target.value, 10) || 0)}
+                                                className="w-full accent-neon-blaze"
+                                            />
+                                        </AdminFormField>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <AdminFormField label={`Rotace (${data.homeDecorations.hero.rotation}°)`} htmlFor="hero-rotation">
+                                            <input
+                                                type="range"
+                                                id="hero-rotation"
+                                                min={-45}
+                                                max={45}
+                                                value={data.homeDecorations.hero.rotation}
+                                                onChange={(e) => handleHeroDecorationChange('rotation', parseInt(e.target.value, 10) || 0)}
+                                                className="w-full accent-neon-blaze"
+                                            />
+                                        </AdminFormField>
+                                        <AdminFormField label="Stín pod obrázkem" htmlFor="hero-shadow">
+                                            <select
+                                                id="hero-shadow"
+                                                value={data.homeDecorations.hero.shadow || 'dark'}
+                                                onChange={(e) => handleHeroDecorationChange('shadow', e.target.value as 'light' | 'dark' | 'none')}
+                                                className={`${baseInputClasses} appearance-none`}
+                                            >
+                                                <option value="dark">Tmavý stín</option>
+                                                <option value="light">Světlý stín</option>
+                                                <option value="none">Bez stínu</option>
+                                            </select>
+                                        </AdminFormField>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </SettingCard>
+                </div>
             )}
 
             {activeSubTab === 'contact' && (
@@ -402,36 +548,16 @@ const LegalTab: React.FC<AdminSectionProps> = ({ data, setData }) => {
 };
 
 const SystemTab: React.FC<AdminSectionProps> = ({ data, showToast }) => {
-    const svgToPng = (svgStr: string, width: number, height: number): Promise<Blob> => {
-        return new Promise((resolve, reject) => {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            if (!ctx) return reject('Canvas context not available');
-
-            const scale = 2;
-            canvas.width = width * scale;
-            canvas.height = height * scale;
-
-            const img = new Image();
-            const svgBase64 = btoa(unescape(encodeURIComponent(svgStr)));
-            const url = `data:image/svg+xml;base64,${svgBase64}`;
-
-            img.onload = () => {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.scale(scale, scale);
-                ctx.drawImage(img, 0, 0, width, height);
-                canvas.toBlob((blob) => {
-                    if (blob) resolve(blob);
-                    else reject('PNG generation failed');
-                }, 'image/png', 0.8);
-            };
-
-            img.onerror = () => {
-                reject('SVG conversion failed');
-            };
-
-            img.src = url;
-        });
+    const downloadTextFile = (filename: string, contents: string, mime = 'application/json') => {
+        const blob = new Blob([contents], { type: `${mime};charset=utf-8` });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
     };
 
     const exportBrandIdentityZip = async () => {
@@ -440,19 +566,16 @@ const SystemTab: React.FC<AdminSectionProps> = ({ data, showToast }) => {
         const sloganText = data.general.slogan || 'FITNESS COACH';
 
         const zip = new JSZip();
-        showToast('Exportuji brand kit...', 'success');
+        // Pozn.: PNG generování přes canvas umí na některých prohlížečích/hostinzích způsobit blikání/GPU crash.
+        // Proto exportujeme pouze SVG (bez canvas renderu).
+        showToast('Exportuji brand kit (SVG)...', 'success');
 
         const headlineSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="400" viewBox="0 0 1400 400"><defs><linearGradient id="ms-grad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#FB923C;stop-opacity:1" /><stop offset="100%" style="stop-color:#F43F5E;stop-opacity:1" /></linearGradient></defs><style>.txt { font-family: sans-serif; font-weight: 900; font-size: 110px; text-transform: uppercase; letter-spacing: -0.04em; }</style><text x="70" y="240" class="txt" fill="#FFFFFF">${h1}<tspan fill="url(#ms-grad)" dx="35">${hAccent}</tspan></text></svg>`;
         const sloganSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="200" viewBox="0 0 1000 200"><defs><linearGradient id="ms-grad-line" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#FB923C;stop-opacity:1" /><stop offset="100%" style="stop-color:#F43F5E;stop-opacity:1" /></linearGradient></defs><style>.slgn { font-family: sans-serif; font-weight: 800; font-size: 22px; text-transform: uppercase; letter-spacing: 0.6em; fill: #94A3B8; }</style><rect x="70" y="93" width="90" height="5" rx="2" fill="url(#ms-grad-line)" /><text x="195" y="105" class="slgn">${sloganText}</text></svg>`;
 
         try {
-            const hPng = await svgToPng(headlineSVG, 1400, 400);
-            const sPng = await svgToPng(sloganSVG, 1000, 200);
-
             zip.file("MS_Headline.svg", headlineSVG);
-            zip.file("MS_Headline.png", hPng);
             zip.file("MS_Slogan.svg", sloganSVG);
-            zip.file("MS_Slogan.png", sPng);
 
             const content = await zip.generateAsync({ type: "blob" });
             const url = URL.createObjectURL(content);
@@ -467,8 +590,15 @@ const SystemTab: React.FC<AdminSectionProps> = ({ data, showToast }) => {
         }
     };
 
+    const exportWebsiteContentJson = () => {
+        // Toto je kompletní obsah webu (všechny služby, galerie, články, nastavení, obrázky v datech…)
+        const jsonStr = JSON.stringify(data, null, 2);
+        downloadTextFile('website_content.json', jsonStr, 'application/json');
+        showToast('Staženo: website_content.json (kompletní obsah webu)', 'success');
+    };
+
     const exportSystemBlueprint = () => {
-        showToast('Exportuji blueprint...', 'success');
+        showToast('Exportuji interní zálohu (blueprint)...', 'success');
 
         const blueprint = {
             projectMeta: {
@@ -479,23 +609,11 @@ const SystemTab: React.FC<AdminSectionProps> = ({ data, showToast }) => {
         };
 
         const jsonStr = JSON.stringify(blueprint, null, 2);
-        const blob = new Blob([jsonStr], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `ms-hub-blueprint.json`;
-        document.body.appendChild(link);
-        link.click();
-
-        // Cleanup with delay to ensure download starts
-        setTimeout(() => {
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-        }, 100);
+        downloadTextFile('ms-hub-blueprint.json', jsonStr, 'application/json');
     };
 
-    const generateSitemap = () => {
-        const baseUrl = 'https://martinstastny.cz';
+    const buildSitemapXml = () => {
+        const baseUrl = `${window.location.origin}${import.meta.env.BASE_URL === '/' ? '' : import.meta.env.BASE_URL.replace(/\/$/, '')}`;
         const today = new Date().toISOString().split('T')[0];
 
         let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
@@ -530,24 +648,59 @@ const SystemTab: React.FC<AdminSectionProps> = ({ data, showToast }) => {
 
         xml += `</urlset>`;
 
-        const zip = new JSZip();
-        zip.file('sitemap.xml', xml);
+        return xml;
+    };
 
-        zip.generateAsync({ type: 'blob' }).then((blob) => {
+    const downloadSitemapXml = () => {
+        const xml = buildSitemapXml();
+        downloadTextFile('sitemap.xml', xml, 'application/xml');
+        showToast('Staženo: sitemap.xml (aktuální)', 'success');
+    };
+
+    const exportFullBackupZip = async () => {
+        try {
+            showToast('Exportuji kompletní zálohu (ZIP)...', 'success');
+
+            const zip = new JSZip();
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+
+            // 1) Obsah webu (to, z čeho web skutečně běží)
+            zip.file('website_content.json', JSON.stringify(data, null, 2));
+
+            // 2) Interní blueprint
+            zip.file('ms-hub-blueprint.json', JSON.stringify({
+                projectMeta: { name: 'Martin Šťastný Hub', exportDate: new Date().toISOString() },
+                currentSnapshot: data
+            }, null, 2));
+
+            // 3) Sitemap
+            zip.file('sitemap.xml', buildSitemapXml());
+
+            // 4) Brand kit (SVG + PNG)
+            const h1 = data.general.heroHeadlinePart1 || 'MARTIN';
+            const hAccent = data.general.heroHeadlinePart3Accent || 'ŠŤASTNÝ';
+            const sloganText = data.general.slogan || 'FITNESS COACH';
+
+            const headlineSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="400" viewBox="0 0 1400 400"><defs><linearGradient id="ms-grad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#FB923C;stop-opacity:1" /><stop offset="100%" style="stop-color:#F43F5E;stop-opacity:1" /></linearGradient></defs><style>.txt { font-family: sans-serif; font-weight: 900; font-size: 110px; text-transform: uppercase; letter-spacing: -0.04em; }</style><text x="70" y="240" class="txt" fill="#FFFFFF">${h1}<tspan fill="url(#ms-grad)" dx="35">${hAccent}</tspan></text></svg>`;
+            const sloganSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="200" viewBox="0 0 1000 200"><defs><linearGradient id="ms-grad-line" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#FB923C;stop-opacity:1" /><stop offset="100%" style="stop-color:#F43F5E;stop-opacity:1" /></linearGradient></defs><style>.slgn { font-family: sans-serif; font-weight: 800; font-size: 22px; text-transform: uppercase; letter-spacing: 0.6em; fill: #94A3B8; }</style><rect x="70" y="93" width="90" height="5" rx="2" fill="url(#ms-grad-line)" /><text x="195" y="105" class="slgn">${sloganText}</text></svg>`;
+
+            const brand = zip.folder('brand');
+            brand?.file('MS_Headline.svg', headlineSVG);
+            brand?.file('MS_Slogan.svg', sloganSVG);
+
+            const blob = await zip.generateAsync({ type: 'blob' });
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            link.download = 'sitemap.zip';
-            document.body.appendChild(link);
+            link.download = `msfitnesstrener_backup_${timestamp}.zip`;
             link.click();
+            URL.revokeObjectURL(url);
 
-            setTimeout(() => {
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url);
-            }, 100);
-
-            showToast('Sitemap.zip byl vygenerován a stažen.', 'success');
-        });
+            showToast('Kompletní záloha stažena (ZIP).', 'success');
+        } catch (e) {
+            console.error(e);
+            showToast('Export ZIP selhal', 'error');
+        }
     };
 
     const tabs = [
@@ -563,14 +716,38 @@ const SystemTab: React.FC<AdminSectionProps> = ({ data, showToast }) => {
 
             {activeSubTab === 'backup' && (
                 <SettingCard title="Nástroje systému">
-                    <div className="space-y-4 max-w-md">
-                        <p className="text-sm text-surface-dark/70 mb-4">Vytvořte si úplnou zálohu nastavení webu do jednoho souboru.</p>
-                        <button
-                            onClick={exportSystemBlueprint}
-                            className="w-full px-6 py-4 bg-surface-dark text-white rounded-full text-[10px] font-black uppercase tracking-[0.3em] hover:neon-gradient transition-all flex items-center justify-center gap-3"
-                        >
-                            Exportovat (.json)
-                        </button>
+                    <div className="space-y-6 max-w-xl">
+                        <p className="text-sm text-surface-dark/70">
+                            Exporty berou <strong>aktuální obsah webu</strong> (stejná data, ze kterých web běží).
+                            Použijte je pro zálohu, přenos na jiný hosting nebo nouzovou obnovu.
+                        </p>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <button
+                                onClick={exportWebsiteContentJson}
+                                className="w-full px-6 py-4 bg-surface-dark text-white rounded-full text-[10px] font-black uppercase tracking-[0.3em] hover:neon-gradient transition-all shadow-md"
+                            >
+                                Stáhnout website_content.json
+                            </button>
+                            <button
+                                onClick={exportFullBackupZip}
+                                className="w-full px-6 py-4 bg-surface-dark text-white rounded-full text-[10px] font-black uppercase tracking-[0.3em] hover:neon-gradient transition-all shadow-md"
+                            >
+                                Kompletní záloha (ZIP)
+                            </button>
+                        </div>
+
+                        <div className="pt-4 border-t border-surface-dark/5">
+                            <p className="text-xs text-surface-dark/50 uppercase tracking-[0.25em] mb-3">
+                                Pokročilé / interní
+                            </p>
+                            <button
+                                onClick={exportSystemBlueprint}
+                                className="w-full px-6 py-4 bg-gray-100 text-surface-dark rounded-full text-[10px] font-black uppercase tracking-[0.3em] hover:bg-gray-200 transition-all"
+                            >
+                                Interní blueprint (.json)
+                            </button>
+                        </div>
                     </div>
                 </SettingCard>
             )}
@@ -578,13 +755,15 @@ const SystemTab: React.FC<AdminSectionProps> = ({ data, showToast }) => {
             {activeSubTab === 'seo' && (
                 <SettingCard title="Export vyhledávání">
                     <div className="space-y-4 max-w-md">
-                        <p className="text-sm text-surface-dark/70 mb-4">Vygenerujte aktuální soubor sitemap.xml pro Google a Seznam.</p>
+                        <p className="text-sm text-surface-dark/70 mb-4">
+                            Vygeneruje sitemap.xml podle aktuálních dat (včetně článků). Vhodné pro Google/Seznam.
+                        </p>
                         <button
-                            onClick={generateSitemap}
+                            onClick={downloadSitemapXml}
                             className="w-full px-6 py-4 bg-surface-dark text-white rounded-full text-[10px] font-black uppercase tracking-[0.3em] hover:neon-gradient transition-all flex items-center justify-center gap-3 shadow-md"
                         >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                            Exportovat Sitemap.xml
+                            Stáhnout sitemap.xml
                         </button>
                     </div>
                 </SettingCard>

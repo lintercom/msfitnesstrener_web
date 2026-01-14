@@ -17,11 +17,11 @@ const PrivacyPolicyPage: React.FC = () => {
                 subTitle="Zásady zpracování osobních údajů"
             />
 
-            <div className="bg-surface pt-20 pb-20 md:pt-32 md:pb-32 relative overflow-hidden">
+            <div className="bg-surface pt-16 pb-16 sm:pt-20 sm:pb-20 md:pt-32 md:pb-32 relative overflow-hidden">
                 <BlueprintGrid className="opacity-[0.03] grayscale invert" />
 
-                <div className="container mx-auto px-6 relative z-10">
-                    <div className="max-w-6xl mx-auto bg-surface-light rounded-[3rem] p-10 md:p-16 lg:p-20 shadow-premium">
+                <div className="container mx-auto px-4 sm:px-6 relative z-10">
+                    <div className="max-w-6xl mx-auto bg-surface-light rounded-[2.5rem] sm:rounded-[3rem] p-6 sm:p-8 md:p-16 lg:p-20 shadow-premium">
                         <div className="prose prose-slate max-w-none space-y-10">
                             <section className="space-y-4">
                                 <h2 className="text-3xl font-black text-surface-dark uppercase tracking-tighter">1. Úvodní ustanovení</h2>
