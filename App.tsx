@@ -45,7 +45,7 @@ const App: React.FC = () => {
   return (
     <DataProvider>
       <AuthProvider>
-        <ReactRouterDom.BrowserRouter basename="/msfitnesstrener_web">
+        <ReactRouterDom.BrowserRouter basename={import.meta.env.VITE_BASE_URL || ''}>
           <ScrollToTop />
           <ReactRouterDom.Routes>
             {/* HLAVNÍ VEŘEJNÝ WEB - HomePage je indexem pro "/" */}

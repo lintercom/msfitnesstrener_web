@@ -8,6 +8,7 @@ import emailjs from '@emailjs/browser';
 import SEO from '../components/SEO';
 
 import { emailConfig as emailServiceConfig } from '../src/config/email.config';
+import { apiConfig } from '../src/config/api.config';
 
 type ClientTab = 'new' | 'existing';
 
@@ -101,22 +102,56 @@ const OrderPage: React.FC = () => {
 
         setStatus('submitting');
 
-        // EMAILJS INTEGRATION
-        // Check if enabled in CMS/JSON, but usage config from file
-        const isEmailEnabled = data.integrations.email.enabled;
+        // Mapping services names
+        const servicesNames = formData.selectedServices.map(id => {
+            const s = data.services.find(s => s.id === id);
+            return s ? s.title : id;
+        }).join(', ');
 
-        if (isEmailEnabled && emailServiceConfig.form.serviceId && emailServiceConfig.form.templateId && emailServiceConfig.publicKey) {
+        // PHP BACKEND - primární metoda pro martin-stastny.cz
+        const sendViaPHP = async (): Promise<boolean> => {
             try {
-                // Mapping services names
-                const servicesNames = formData.selectedServices.map(id => {
-                    const s = data.services.find(s => s.id === id);
-                    return s ? s.title : id;
-                }).join(', ');
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), apiConfig.timeout);
 
-                // 1. Odeslání notifikace trenérovi
+                const response = await fetch(apiConfig.endpoints.sendEmail, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: `${formData.firstName} ${formData.lastName}`,
+                        email: formData.email,
+                        phone: formData.phone,
+                        services: servicesNames,
+                        message: formData.note || 'Žádná zpráva'
+                    }),
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    throw new Error(`PHP API error: ${response.status}`);
+                }
+
+                const result = await response.json();
+                return result.success === true;
+            } catch (error) {
+                console.warn('PHP backend unavailable:', error);
+                return false;
+            }
+        };
+
+        // EMAILJS - záložní metoda
+        const sendViaEmailJS = async (): Promise<boolean> => {
+            const isEmailEnabled = data.integrations.email.enabled;
+            if (!isEmailEnabled || !emailServiceConfig.form.serviceId || !emailServiceConfig.form.templateId || !emailServiceConfig.publicKey) {
+                return false;
+            }
+
+            try {
                 await emailjs.send(
                     emailServiceConfig.form.serviceId,
-                    emailServiceConfig.form.templateId, // template_vh4czst
+                    emailServiceConfig.form.templateId,
                     {
                         title: 'Nová poptávka z webu',
                         name: `${formData.firstName} ${formData.lastName}`,
@@ -125,23 +160,30 @@ const OrderPage: React.FC = () => {
                     },
                     emailServiceConfig.publicKey
                 );
-
-
-
-                setStatus('success');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return true;
             } catch (error) {
                 console.error('EmailJS Error:', error);
-                setStatus('error');
-                alert('Odeslání selhalo. Zkontrolujte prosím připojení nebo zkuste později.');
+                return false;
             }
+        };
+
+        // Logika odesílání: PHP první, pak EmailJS jako fallback
+        let sent = false;
+
+        if (apiConfig.usePHP) {
+            sent = await sendViaPHP();
+        }
+
+        if (!sent) {
+            sent = await sendViaEmailJS();
+        }
+
+        if (sent) {
+            setStatus('success');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
-            // Fallback or demo mode (when email is not configured)
-            console.warn('EmailJS not configured, simulating success');
-            setTimeout(() => {
-                setStatus('success');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 1500);
+            setStatus('error');
+            alert('Odeslání selhalo. Zkontrolujte prosím připojení nebo zkuste později.');
         }
     };
 
