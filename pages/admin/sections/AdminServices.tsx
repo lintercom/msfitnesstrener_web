@@ -1,6 +1,6 @@
 
 import React, { useState, useMemo } from 'react';
-import { Service, FormFieldDefinition } from '../../../types';
+import { Service, FormFieldDefinition, ServiceLocation } from '../../../types';
 import AdminModal from '../../../components/admin/AdminModal';
 import { AdminSectionProps } from '../AdminDashboard';
 import AdminFormField from '../../../components/admin/AdminFormField';
@@ -11,7 +11,21 @@ const ServiceForm: React.FC<{
     onCancel: () => void;
     showToast: AdminSectionProps['showToast']
 }> = ({ item, onSave, onCancel, showToast }) => {
-    const [formData, setFormData] = useState<Service>(item);
+    // Konverze starého formátu locations (string[]) na nový ({ name, url }[])
+    const convertLocations = (locations: any[] | undefined): ServiceLocation[] => {
+        if (!locations) return [];
+        return locations.map(loc => {
+            if (typeof loc === 'string') {
+                return { name: loc, url: '' };
+            }
+            return { name: loc.name || '', url: loc.url || '' };
+        });
+    };
+
+    const [formData, setFormData] = useState<Service>({
+        ...item,
+        locations: convertLocations(item.locations as any)
+    });
 
     const inputClasses = "w-full bg-gray-50 border border-surface-dark/10 rounded-2xl p-4 text-surface-dark placeholder-surface-dark/30 focus:outline-none focus:border-neon-blaze transition-colors font-medium text-sm shadow-sm";
 
@@ -20,14 +34,14 @@ const ServiceForm: React.FC<{
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleLocationChange = (index: number, value: string) => {
+    const handleLocationChange = (index: number, field: 'name' | 'url', value: string) => {
         const newLocations = [...(formData.locations || [])];
-        newLocations[index] = value;
+        newLocations[index] = { ...newLocations[index], [field]: value };
         setFormData(prev => ({ ...prev, locations: newLocations }));
     };
 
     const addLocation = () => {
-        setFormData(prev => ({ ...prev, locations: [...(prev.locations || []), ''] }));
+        setFormData(prev => ({ ...prev, locations: [...(prev.locations || []), { name: '', url: '' }] }));
     };
 
     const removeLocation = (index: number) => {
@@ -131,19 +145,33 @@ const ServiceForm: React.FC<{
                         <button type="button" onClick={addLocation} className="text-[9px] font-black text-neon-blaze uppercase tracking-widest hover:underline">Přidat místo</button>
                     </div>
 
-                    <div className="space-y-3">
+                    <div className="space-y-4">
                         {formData.locations?.map((loc, idx) => (
-                            <div key={idx} className="flex gap-3">
-                                <input
-                                    type="text"
-                                    value={loc}
-                                    onChange={(e) => handleLocationChange(idx, e.target.value)}
-                                    className={inputClasses}
-                                    placeholder="Např. Sportcentrum Vizovice"
-                                />
-                                <button type="button" onClick={() => removeLocation(idx)} className="p-4 text-red-500 hover:bg-red-50 rounded-2xl transition-colors">
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                                </button>
+                            <div key={`loc-${idx}-${loc.name || 'empty'}`} className="p-4 bg-gray-50 rounded-2xl border border-surface-dark/5 space-y-3">
+                                <div className="flex gap-3">
+                                    <input
+                                        type="text"
+                                        value={loc.name}
+                                        onChange={(e) => handleLocationChange(idx, 'name', e.target.value)}
+                                        className={inputClasses}
+                                        placeholder="Název místa (např. Sportcentrum Vizovice)"
+                                    />
+                                    <button type="button" onClick={() => removeLocation(idx)} className="p-4 text-red-500 hover:bg-red-100 rounded-2xl transition-colors flex-shrink-0">
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                    </button>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-white border border-surface-dark/10 text-surface-dark/40 flex-shrink-0">
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
+                                    </div>
+                                    <input
+                                        type="url"
+                                        value={loc.url || ''}
+                                        onChange={(e) => handleLocationChange(idx, 'url', e.target.value)}
+                                        className={`${inputClasses} flex-1`}
+                                        placeholder="Odkaz na mapy (volitelné, např. https://maps.google.com/...)"
+                                    />
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -160,7 +188,7 @@ const ServiceForm: React.FC<{
 
                     <div className="space-y-3">
                         {formData.prices?.map((p, idx) => (
-                            <div key={idx} className="flex gap-3 items-center">
+                            <div key={`price-${idx}-${p.label || 'empty'}`} className="flex gap-3 items-center">
                                 <input
                                     type="text"
                                     value={p.label}
@@ -182,6 +210,78 @@ const ServiceForm: React.FC<{
                         ))}
                     </div>
                 </div>
+            </div>
+
+            {/* SEKCE 4: NASTAVENÍ CTA TLAČÍTKA */}
+            <div className="space-y-6">
+                <div className="flex items-center gap-4">
+                    <div className="h-px w-8 neon-gradient"></div>
+                    <h4 className="text-[10px] font-black text-surface-dark uppercase tracking-[0.4em]">Tlačítko "Chci službu"</h4>
+                </div>
+
+                <AdminFormField label="Kam má tlačítko odkazovat?" htmlFor="ctaTab">
+                    <div className="flex flex-col sm:flex-row gap-3">
+                        <label 
+                            className={`flex-1 p-4 rounded-2xl border-2 cursor-pointer transition-all ${
+                                (formData.ctaTab || 'new') === 'new' 
+                                    ? 'border-neon-blaze bg-neon-blaze/5' 
+                                    : 'border-surface-dark/10 bg-gray-50 hover:border-surface-dark/20'
+                            }`}
+                        >
+                            <input
+                                type="radio"
+                                name="ctaTab"
+                                value="new"
+                                checked={(formData.ctaTab || 'new') === 'new'}
+                                onChange={(e) => setFormData(prev => ({ ...prev, ctaTab: e.target.value as 'new' | 'existing' }))}
+                                className="sr-only"
+                            />
+                            <div className="flex items-center gap-3">
+                                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                                    (formData.ctaTab || 'new') === 'new' ? 'border-neon-blaze' : 'border-surface-dark/30'
+                                }`}>
+                                    {(formData.ctaTab || 'new') === 'new' && (
+                                        <div className="w-2.5 h-2.5 rounded-full bg-neon-blaze"></div>
+                                    )}
+                                </div>
+                                <div>
+                                    <span className="font-bold text-surface-dark text-sm">Nová spolupráce</span>
+                                    <p className="text-[10px] text-surface-dark/50 mt-0.5">Pro nové klienty - kontaktní formulář</p>
+                                </div>
+                            </div>
+                        </label>
+
+                        <label 
+                            className={`flex-1 p-4 rounded-2xl border-2 cursor-pointer transition-all ${
+                                formData.ctaTab === 'existing' 
+                                    ? 'border-neon-blaze bg-neon-blaze/5' 
+                                    : 'border-surface-dark/10 bg-gray-50 hover:border-surface-dark/20'
+                            }`}
+                        >
+                            <input
+                                type="radio"
+                                name="ctaTab"
+                                value="existing"
+                                checked={formData.ctaTab === 'existing'}
+                                onChange={(e) => setFormData(prev => ({ ...prev, ctaTab: e.target.value as 'new' | 'existing' }))}
+                                className="sr-only"
+                            />
+                            <div className="flex items-center gap-3">
+                                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                                    formData.ctaTab === 'existing' ? 'border-neon-blaze' : 'border-surface-dark/30'
+                                }`}>
+                                    {formData.ctaTab === 'existing' && (
+                                        <div className="w-2.5 h-2.5 rounded-full bg-neon-blaze"></div>
+                                    )}
+                                </div>
+                                <div>
+                                    <span className="font-bold text-surface-dark text-sm">Pro klienty</span>
+                                    <p className="text-[10px] text-surface-dark/50 mt-0.5">Pro stávající klienty - rezervace termínu</p>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </AdminFormField>
             </div>
 
             {/* AKCE */}
@@ -207,10 +307,68 @@ const ServiceForm: React.FC<{
 const AdminServices: React.FC<AdminSectionProps> = ({ data, setData, showToast }) => {
     const [modalState, setModalState] = useState<{ mode: 'add' | 'edit' | 'closed'; item: Service | null }>({ mode: 'closed', item: null });
     const [itemToDelete, setItemToDelete] = useState<Service | null>(null);
+    const [draggedId, setDraggedId] = useState<string | null>(null);
+    const [dragOverId, setDragOverId] = useState<string | null>(null);
 
     const sortedServices = useMemo(() => {
         return [...data.services].sort((a, b) => a.order - b.order);
     }, [data.services]);
+
+    // Drag and Drop handlers
+    const handleDragStart = (e: React.DragEvent, serviceId: string) => {
+        setDraggedId(serviceId);
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', serviceId);
+    };
+
+    const handleDragOver = (e: React.DragEvent, serviceId: string) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        if (serviceId !== draggedId) {
+            setDragOverId(serviceId);
+        }
+    };
+
+    const handleDragLeave = () => {
+        setDragOverId(null);
+    };
+
+    const handleDrop = (e: React.DragEvent, targetId: string) => {
+        e.preventDefault();
+        
+        if (!draggedId || draggedId === targetId) {
+            setDraggedId(null);
+            setDragOverId(null);
+            return;
+        }
+
+        const draggedIndex = sortedServices.findIndex(s => s.id === draggedId);
+        const targetIndex = sortedServices.findIndex(s => s.id === targetId);
+
+        if (draggedIndex === -1 || targetIndex === -1) return;
+
+        // Vytvoř nové pole s přeuspořádanými službami
+        const newServices = [...sortedServices];
+        const [draggedService] = newServices.splice(draggedIndex, 1);
+        newServices.splice(targetIndex, 0, draggedService);
+
+        // Aktualizuj order pro všechny služby
+        const updatedServices = newServices.map((service, index) => ({
+            ...service,
+            order: index + 1
+        }));
+
+        setData(prev => prev ? { ...prev, services: updatedServices } : null);
+        showToast('Pořadí služeb bylo změněno', 'success');
+        
+        setDraggedId(null);
+        setDragOverId(null);
+    };
+
+    const handleDragEnd = () => {
+        setDraggedId(null);
+        setDragOverId(null);
+    };
 
     const handleSave = (itemToSave: Service) => {
         if (modalState.mode === 'add') {
@@ -300,23 +458,53 @@ const AdminServices: React.FC<AdminSectionProps> = ({ data, setData, showToast }
                 </div>
             </AdminModal>
 
+            {/* Nápověda pro drag and drop */}
+            <div className="flex items-center gap-2 text-[10px] text-surface-dark/50 font-medium">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                </svg>
+                <span>Přetažením změníš pořadí služeb na webu</span>
+            </div>
+
             <div className="grid grid-cols-1 gap-4">
-                {sortedServices.map((service) => (
+                {sortedServices.map((service, index) => (
                     <div
                         key={service.id}
-                        className="p-5 md:p-6 bg-white border border-surface-dark/5 rounded-[2rem] flex flex-col md:flex-row justify-between items-center group relative overflow-hidden shadow-sm transition-colors"
+                        draggable
+                        onDragStart={(e) => handleDragStart(e, service.id)}
+                        onDragOver={(e) => handleDragOver(e, service.id)}
+                        onDragLeave={handleDragLeave}
+                        onDrop={(e) => handleDrop(e, service.id)}
+                        onDragEnd={handleDragEnd}
+                        className={`p-5 md:p-6 bg-white border-2 rounded-[2rem] flex flex-col md:flex-row justify-between items-center group relative overflow-hidden shadow-sm transition-all cursor-grab active:cursor-grabbing ${
+                            draggedId === service.id 
+                                ? 'opacity-50 border-neon-blaze scale-[0.98]' 
+                                : dragOverId === service.id 
+                                    ? 'border-neon-blaze border-dashed bg-neon-blaze/5' 
+                                    : 'border-surface-dark/5 hover:border-surface-dark/10'
+                        }`}
                     >
-                        <div className="absolute top-0 right-0 w-24 h-24 bg-neon-pink opacity-0 group-hover:opacity-5 blur-3xl transition-opacity"></div>
+                        <div className="absolute top-0 right-0 w-24 h-24 bg-neon-pink opacity-0 group-hover:opacity-5 blur-3xl transition-opacity pointer-events-none"></div>
 
-                        <div className="flex items-center gap-6 w-full">
+                        <div className="flex items-center gap-4 md:gap-6 w-full">
+                            {/* Drag handle + číslo pořadí */}
+                            <div className="flex flex-col items-center gap-1 flex-shrink-0 select-none">
+                                <div className="w-8 h-8 rounded-lg bg-gray-100 border border-surface-dark/5 flex items-center justify-center text-surface-dark/30 group-hover:text-surface-dark/50 transition-colors">
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M4 8h16M4 16h16" />
+                                    </svg>
+                                </div>
+                                <span className="text-[9px] font-black text-surface-dark/30">{index + 1}</span>
+                            </div>
+
                             <div className="relative flex-shrink-0 flex items-center">
-                                <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl overflow-hidden border border-surface-dark/5 shadow-sm bg-gray-50 flex-shrink-0">
-                                    <img src={service.imageUrl} alt={service.title} className="w-full h-full object-cover" />
+                                <div className="w-14 h-14 md:w-20 md:h-20 rounded-2xl overflow-hidden border border-surface-dark/5 shadow-sm bg-gray-50 flex-shrink-0">
+                                    <img src={service.imageUrl} alt={service.title} className="w-full h-full object-cover pointer-events-none" />
                                 </div>
                             </div>
 
-                            <div className="space-y-1">
-                                <h4 className="font-black text-lg md:text-xl text-surface-dark uppercase tracking-tighter transition-colors">
+                            <div className="space-y-1 min-w-0 flex-1">
+                                <h4 className="font-black text-base md:text-xl text-surface-dark uppercase tracking-tighter transition-colors truncate">
                                     {service.title}
                                     {service.subheading && <span className="ml-2 text-surface-dark/40 font-bold">({service.subheading})</span>}
                                 </h4>
@@ -326,7 +514,7 @@ const AdminServices: React.FC<AdminSectionProps> = ({ data, setData, showToast }
                             </div>
                         </div>
 
-                        <div className="flex gap-3 mt-6 md:mt-0 w-full md:w-auto justify-end relative z-10">
+                        <div className="flex gap-2 md:gap-3 mt-4 md:mt-0 w-full md:w-auto justify-end relative z-10">
                             <button
                                 onClick={() => openModal('edit', service)}
                                 className="w-10 h-10 rounded-xl bg-gray-50 border border-surface-dark/5 text-surface-dark/60 hover:text-surface-dark hover:border-surface-dark/20 flex items-center justify-center transition-colors shadow-sm"

@@ -571,6 +571,10 @@
         "notificationEmail": "stastny.fitcoach@gmail.com",
         "recoveryEmail": "stastny.fitcoach@gmail.com"
       }
+    },
+    "analytics": {
+      "googleAnalyticsId": "G-JCBGQRSFW9",
+      "facebookPixelId": ""
     }
   },
   "localization": {

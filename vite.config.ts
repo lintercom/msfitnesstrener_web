@@ -27,6 +27,22 @@ export default defineConfig(({ mode }) => {
         input: {
           main: path.resolve(__dirname, 'index.html'),
         },
+        output: {
+          manualChunks: {
+            // Vendor chunks
+            'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+            'vendor-utils': ['@emailjs/browser', 'jszip'],
+            // Admin chunk - lazy loaded
+            'admin': [
+              './pages/admin/AdminDashboard.tsx',
+              './pages/admin/sections/AdminAdvancedSettings.tsx',
+              './pages/admin/sections/AdminContent.tsx',
+              './pages/admin/sections/AdminServices.tsx',
+              './pages/admin/sections/AdminGallery.tsx',
+              './pages/admin/sections/AdminBlog.tsx',
+            ],
+          },
+        },
       },
     },
   };

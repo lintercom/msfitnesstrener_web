@@ -15,6 +15,11 @@ export interface FormFieldDefinition {
   description?: string;
 }
 
+export interface ServiceLocation {
+  name: string;
+  url?: string; // Volitelný odkaz na mapy (Google Maps, Mapy.cz, atd.)
+}
+
 export interface Service {
   id: string;
   title: string;
@@ -28,8 +33,9 @@ export interface Service {
   imageScale?: number;
   imageOpacity?: number; // 0-100
   imageRotation?: number; // degrees
-  locations?: string[]; // Místa konání (např. "Sportcentrum Vizovice")
+  locations?: ServiceLocation[]; // Místa konání s volitelným odkazem na mapy
   prices?: { label: string; price: string }[]; // Ceník (např. { label: "student", price: "350 Kč" })
+  ctaTab?: 'new' | 'existing'; // Kam odkazuje CTA tlačítko: 'new' = Nová spolupráce, 'existing' = Pro klienty
 }
 
 export interface GalleryItem {
@@ -251,6 +257,10 @@ export interface IntegrationsSettings {
       resetTemplateId?: string;
       recoveryEmail: string;
     }
+  };
+  analytics: {
+    googleAnalyticsId: string; // např. G-XXXXXXXXXX
+    facebookPixelId: string;   // např. 1234567890
   };
 }
 

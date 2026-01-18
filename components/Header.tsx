@@ -175,7 +175,13 @@ const Header: React.FC = () => {
           }`}
       >
         <div className="flex justify-between items-center px-6 py-5 border-b border-white/5">
-          <Logo className="h-10 w-auto" variant="light" />
+          <ReactRouterDom.Link 
+            to="/" 
+            onClick={() => setIsMenuOpen(false)}
+            className="block"
+          >
+            <Logo className="h-10 w-auto" variant="light" />
+          </ReactRouterDom.Link>
           <button
             onClick={() => setIsMenuOpen(false)}
             className="p-2 text-white"
@@ -209,7 +215,7 @@ const Header: React.FC = () => {
           <ReactRouterDom.Link
             to="/objednat"
             onClick={() => setIsMenuOpen(false)}
-            className="w-full max-w-xs py-5 neon-gradient text-white text-sm font-black uppercase tracking-widest rounded-full text-center transition-all hover:shadow-neon-glow hover:scale-[1.05] active:scale-95 transform will-change-transform"
+            className="inline-flex items-center justify-center px-10 py-4 neon-gradient text-white text-base font-black uppercase tracking-[0.15em] rounded-full text-center shadow-lg shadow-neon-blaze/30 transition-all hover:shadow-neon-glow hover:scale-[1.02] active:scale-95 transform will-change-transform"
           >
             Začít trénovat
           </ReactRouterDom.Link>

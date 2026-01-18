@@ -76,7 +76,7 @@ const GalleryItemForm: React.FC<{
                 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4">
                     {formData.imageUrls.map((url, index) => (
-                        <div key={index} className="relative group aspect-square rounded-2xl overflow-hidden bg-gray-100 border border-surface-dark/5 shadow-sm">
+                        <div key={`img-${index}-${url.slice(-30)}`} className="relative group aspect-square rounded-2xl overflow-hidden bg-gray-100 border border-surface-dark/5 shadow-sm">
                             <img src={url} className="w-full h-full object-cover" alt="Preview"/>
                             <div className="absolute top-2 right-2 flex gap-1 md:opacity-0 group-hover:opacity-100 transition-opacity">
                                 <button 

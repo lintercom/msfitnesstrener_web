@@ -6,6 +6,60 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
 
+  <!-- DNS Prefetch & Preconnect for faster loading -->
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+  <link rel="dns-prefetch" href="https://cdn.tailwindcss.com" />
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+
+  <!-- Google tag (gtag.js) with Consent Mode v2 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-JCBGQRSFW9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    
+    // Default consent - denied until user accepts cookies
+    gtag('consent', 'default', {
+      'analytics_storage': 'denied',
+      'ad_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied',
+      'wait_for_update': 500
+    });
+    
+    gtag('js', new Date());
+    gtag('config', 'G-JCBGQRSFW9', {
+      'anonymize_ip': true
+    });
+    
+    // Listen for cookie consent changes
+    window.addEventListener('cookie-consent-updated', function(e) {
+      var prefs = e.detail;
+      gtag('consent', 'update', {
+        'analytics_storage': prefs.analytics ? 'granted' : 'denied',
+        'ad_storage': prefs.marketing ? 'granted' : 'denied',
+        'ad_user_data': prefs.marketing ? 'granted' : 'denied',
+        'ad_personalization': prefs.marketing ? 'granted' : 'denied'
+      });
+    });
+    
+    // Check if consent was already given (page reload)
+    (function() {
+      try {
+        var stored = localStorage.getItem('ms-cookie-consent-settings');
+        if (stored) {
+          var prefs = JSON.parse(stored);
+          gtag('consent', 'update', {
+            'analytics_storage': prefs.analytics ? 'granted' : 'denied',
+            'ad_storage': prefs.marketing ? 'granted' : 'denied',
+            'ad_user_data': prefs.marketing ? 'granted' : 'denied',
+            'ad_personalization': prefs.marketing ? 'granted' : 'denied'
+          });
+        }
+      } catch(e) {}
+    })();
+  </script>
+
   <!-- SEO: Primary Meta Tags -->
   <meta name="google-site-verification" content="5axqCGdDIYmBGEAD_L561iIe32xmTInxDYLOOAOIp2M" />
   <title>Martin Šťastný | Osobní trenér Vizovice a Zlín</title>
@@ -85,12 +139,19 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Google Fonts: Space Grotesk & Manrope -->
+  <!-- Google Fonts: Space Grotesk & Manrope - Optimized loading -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Space+Grotesk:wght@700&display=swap">
   <link
-    href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Space+Grotesk:wght@300..700&display=swap"
-    rel="stylesheet">
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Space+Grotesk:wght@700&display=swap"
+    rel="stylesheet"
+    media="print"
+    onload="this.media='all'"
+  >
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+  </noscript>
 
   <script>
     tailwind.config = {
@@ -126,7 +187,15 @@
     }
   </script>
 
+  <!-- Critical CSS for faster FCP -->
   <style>
+    /* Critical above-the-fold styles */
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+    body{margin:0;background-color:#0F172A;color:#F8FAFC;font-family:'Manrope',system-ui,sans-serif}
+    #root>div[style*="position: fixed"]{background:#0F172A}
+    .neon-gradient{background:linear-gradient(45deg,#FB923C 10%,#F43F5E 90%)!important}
+    
     html {
       scroll-behavior: smooth;
       scrollbar-gutter: stable;
@@ -188,6 +257,36 @@
     /* Hide noscript content when JS is enabled */
     .seo-content {
       display: none;
+    }
+
+    /* Chat bubble animations */
+    @keyframes chat-pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    .animate-chat-pulse {
+      animation: chat-pulse 1.5s ease-in-out infinite;
+    }
+
+    /* Mobile-first responsive adjustments */
+    @media (max-width: 767px) {
+      .hero-mobile-stack {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    /* Smooth transitions for all interactive elements */
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Better touch targets on mobile */
+    @media (max-width: 640px) {
+      button, a, [role="button"] {
+        min-height: 44px;
+      }
     }
   </style>
 </head>

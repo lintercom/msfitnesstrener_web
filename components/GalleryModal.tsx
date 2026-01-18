@@ -132,9 +132,9 @@ const GalleryModal: React.FC<GalleryModalProps> = ({
                     {hasMultipleImages && (
                         <div className="absolute bottom-6 flex flex-col items-center gap-3 z-30">
                             <div className="flex gap-2.5">
-                                {item.imageUrls.map((_, idx) => (
+                                {item.imageUrls.map((url, idx) => (
                                     <button
-                                        key={idx}
+                                        key={`dot-${idx}-${url.slice(-20)}`}
                                         onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(idx); }}
                                         className={`h-1 rounded-full transition-all duration-500 ${idx === currentImageIndex ? 'bg-neon-pink w-8 shadow-neon-glow' : 'bg-white/30 w-2'}`}
                                     />

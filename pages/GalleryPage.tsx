@@ -70,6 +70,7 @@ const GalleryPage: React.FC = () => {
                                         <img
                                             src={item.imageUrls[0]}
                                             alt={item.title}
+                                            loading="lazy"
                                             className="w-full h-full object-cover grayscale-[0.2] brightness-95 transition-all duration-1000 group-hover:grayscale-0 group-hover:brightness-105 group-hover:scale-110"
                                         />
 

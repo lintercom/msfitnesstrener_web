@@ -6,6 +6,7 @@ import Footer from '../Footer';
 import { useData } from '../../context/DataProvider';
 import Logo from '../Logo';
 import CookieConsent from '../legal/CookieConsent';
+import Analytics from '../Analytics';
 
 const LoadingSpinner: React.FC = () => (
     <div className="fixed inset-0 bg-background flex flex-col items-center justify-center z-[200]">
@@ -169,6 +170,7 @@ const MainLayout: React.FC = () => {
     return (
         <div className="bg-background text-primary-text font-sans flex flex-col min-h-screen relative overflow-x-hidden">
             <DynamicStyles />
+            <Analytics />
             <Header />
             <main className="flex-grow isolation-auto">
                 <ReactRouterDom.Outlet />

@@ -23,6 +23,7 @@ const BlogCard: React.FC<{
       <img
         src={imageUrl}
         alt={title}
+        loading="lazy"
         className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
       />
     </div>

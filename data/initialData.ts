@@ -348,6 +348,10 @@ export const initialData: SiteData = {
         notificationEmail: 'slavik-petr@seznam.cz',
         recoveryEmail: 'slavik-petr@seznam.cz'
       }
+    },
+    analytics: {
+      googleAnalyticsId: '', // např. G-XXXXXXXXXX
+      facebookPixelId: '',   // např. 1234567890
     }
   },
   localization: {
