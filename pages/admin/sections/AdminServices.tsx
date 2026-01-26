@@ -275,7 +275,7 @@ const ServiceForm: React.FC<{
                                     )}
                                 </div>
                                 <div>
-                                    <span className="font-bold text-surface-dark text-sm">Pro klienty</span>
+                                    <span className="font-bold text-surface-dark text-sm">REZERVACE</span>
                                     <p className="text-[10px] text-surface-dark/50 mt-0.5">Pro stávající klienty - rezervace termínu</p>
                                 </div>
                             </div>

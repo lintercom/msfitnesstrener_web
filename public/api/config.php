@@ -7,12 +7,23 @@ return [
         // Kam se budou posílat poptávky
         'to' => 'info@martin-stastny.cz',
 
-        // Odesílatel (musí být z vaší domény)
+        // Odesílatel (musí být z vaší domény - DŮLEŽITÉ: musí existovat na hostingu!)
         'from' => 'web@martin-stastny.cz',
         'from_name' => 'Martin Šťastný Web',
 
         // Předmět emailu
-        'subject_prefix' => 'Nová poptávka z webu: '
+        'subject_prefix' => 'Nová poptávka z webu: ',
+        
+        // SMTP konfigurace (volitelné - pokud chcete použít SMTP místo mail())
+        // Pokud chcete použít SMTP, odkomentujte a vyplňte:
+        // 'smtp' => [
+        //     'enabled' => false,
+        //     'host' => 'smtp.hostinger.com',
+        //     'port' => 587,
+        //     'username' => 'web@martin-stastny.cz',
+        //     'password' => 'vaše-heslo',
+        //     'encryption' => 'tls' // 'tls' nebo 'ssl'
+        // ]
     ],
 
     // Automatická odpověď odesílateli

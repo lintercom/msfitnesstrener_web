@@ -214,7 +214,7 @@ const OrderPage: React.FC = () => {
                         <div className="flex justify-center mb-16 animate-in fade-in duration-500">
                             <div className="bg-surface-light/40 backdrop-blur-sm md:backdrop-blur-md p-1.5 rounded-full border border-surface-dark/5 flex items-center shadow-xl max-w-full">
                                 <button onClick={() => setActiveTab('new')} className={`px-6 sm:px-8 md:px-12 py-3.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-[0.25em] sm:tracking-[0.3em] transition-all duration-500 ${activeTab === 'new' ? 'neon-gradient text-white shadow-lg' : 'text-surface-dark/65 hover:text-surface-dark'}`}>Nová spolupráce</button>
-                                <button onClick={() => setActiveTab('existing')} className={`px-6 sm:px-8 md:px-12 py-3.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-[0.25em] sm:tracking-[0.3em] transition-all duration-500 ${activeTab === 'existing' ? 'neon-gradient text-white shadow-lg' : 'text-surface-dark/65 hover:text-surface-dark'}`}>Pro klienty</button>
+                                <button onClick={() => setActiveTab('existing')} className={`px-6 sm:px-8 md:px-12 py-3.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-[0.25em] sm:tracking-[0.3em] transition-all duration-500 ${activeTab === 'existing' ? 'neon-gradient text-white shadow-lg' : 'text-surface-dark/65 hover:text-surface-dark'}`}>REZERVACE</button>
                             </div>
                         </div>
                     )}

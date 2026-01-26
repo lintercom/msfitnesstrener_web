@@ -91,13 +91,13 @@ const TermsAndConditionsPage: React.FC = () => {
                                         <div className="w-6 h-6 rounded-full bg-green-500/20 text-green-600 flex items-center justify-center flex-shrink-0 mt-1">
                                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
                                         </div>
-                                        <p className="text-surface-dark/70 font-bold text-lg md:text-xl">Zrušení více než 24 hodin předem – BEZ POPLATKU</p>
+                                        <p className="text-surface-dark/70 font-bold text-lg md:text-xl">Zrušení více než 6 hodin předem – BEZ POPLATKU</p>
                                     </div>
                                     <div className="flex items-start gap-4">
                                         <div className="w-6 h-6 rounded-full bg-red-500/20 text-red-600 flex items-center justify-center flex-shrink-0 mt-1">
                                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" /></svg>
                                         </div>
-                                        <p className="text-surface-dark/70 font-bold text-lg md:text-xl">Zrušení méně než 24 hodin předem – STORNO POPLATEK 100% CENY</p>
+                                        <p className="text-surface-dark/70 font-bold text-lg md:text-xl">Zrušení méně než 6 hodin předem – STORNO POPLATEK 100% CENY</p>
                                     </div>
                                 </div>
                             </section>

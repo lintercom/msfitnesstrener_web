@@ -38,7 +38,7 @@ const AboutMePage: React.FC = () => {
                                     <img
                                         src={data.general.heroImage}
                                         loading="lazy"
-                                        className="absolute inset-0 w-full h-full object-cover grayscale opacity-90"
+                                        className="absolute inset-0 w-full h-full object-cover"
                                         alt={data.general.companyName}
                                     />
                                 ) : (

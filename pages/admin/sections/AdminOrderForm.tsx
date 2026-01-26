@@ -141,7 +141,7 @@ const AdminOrderForm: React.FC<AdminSectionProps> = ({ data, setData, showToast 
                         onClick={() => setActiveTab('existing')}
                         className={`px-6 md:px-10 py-3 rounded-full text-[10px] md:text-xs font-black uppercase tracking-[0.2em] transition-all duration-300 ${activeTab === 'existing' ? 'neon-gradient text-white shadow-lg' : 'text-surface-dark/50 hover:text-surface-dark'}`}
                     >
-                        Pro klienty
+                        REZERVACE
                     </button>
                 </div>
             </div>
@@ -183,7 +183,7 @@ const AdminOrderForm: React.FC<AdminSectionProps> = ({ data, setData, showToast 
                 </div>
             )}
 
-            {/* TAB: PRO KLIENTY */}
+            {/* TAB: REZERVACE */}
             {activeTab === 'existing' && (
                 <div className="space-y-8 animate-in fade-in duration-300">
                     <div className="space-y-6">

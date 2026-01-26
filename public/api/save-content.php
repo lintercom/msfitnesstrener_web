@@ -107,6 +107,25 @@ if (file_exists($contentFile)) {
     $backupFile = $contentFile . '.backup.' . date('Y-m-d_H-i-s');
     if (!copy($contentFile, $backupFile)) {
         error_log("[SAVE-CONTENT] Warning: Failed to create backup");
+    } else {
+        // Spravovat zálohy - držet maximálně 20 zálohových souborů
+        $backupDir = dirname($contentFile);
+        $backupPattern = $contentFile . '.backup.*';
+        $backups = glob($backupPattern);
+        
+        if ($backups !== false && count($backups) > 20) {
+            // Seřadit podle času modifikace (nejstarší první)
+            usort($backups, function($a, $b) {
+                return filemtime($a) - filemtime($b);
+            });
+            
+            // Smazat nejstarší zálohy (ponechat jen 20 nejnovějších)
+            $backupsToDelete = array_slice($backups, 0, count($backups) - 20);
+            foreach ($backupsToDelete as $oldBackup) {
+                @unlink($oldBackup);
+                error_log("[SAVE-CONTENT] Deleted old backup: " . basename($oldBackup));
+            }
+        }
     }
 }
 

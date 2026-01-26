@@ -1,0 +1,50 @@
+﻿{
+    "general": {
+        "companyName": "Martin Ĺ ĹĄastnĂ˝",
+        "logo": "/images/logo.png",
+        "logoScale": 129,
+        "heroImage": "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80",
+        "favicon": "/favicon.ico",
+        "slogan": "FITNESS COACH",
+        "heroHeadlinePart1": "MARTIN",
+        "heroHeadlinePart2": "",
+        "heroHeadlinePart3Accent": "Ĺ Ĺ¤ASTNĂť",
+        "heroText": "PĹ™ekonej svĂ© limity s profesionĂˇlnĂ­m vedenĂ­m. IndividuĂˇlnĂ­ pĹ™Ă­stup, trĂ©ninkovĂ© plĂˇny na mĂ­ru a podpora na cestÄ› za tvĂ˝m lepĹˇĂ­m jĂˇ.",
+        "servicesHighlightText": "Specializuji se na komplexnĂ­ rozvoj sĂ­ly, kondice a mobility.",
+        "contactEmail": "info@martinstastny.cz",
+        "contactPhone": "+420 123 456 789",
+        "address": "Praha, ÄŚeskĂˇ republika",
+        "copyright": "Â© 2026 Martin Ĺ ĹĄastnĂ˝. VĹˇechna prĂˇva vyhrazena.",
+        "socials": {
+            "facebook": "https://www.facebook.com/profile.php?id=61578971855848&sk=about",
+            "instagram": "https://www.instagram.com/martin_stastny_fitness_coach?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+        }
+    },
+    "pageHeroes": {
+        "services": {
+            "titlePart1": "Fitness",
+            "titlePart2Accent": "SluĹľby",
+            "description": "MOJE SLUĹ˝BY"
+        },
+        "gallery": {
+            "titlePart1": "Proces",
+            "titlePart2Accent": "TrĂ©ninkĹŻ",
+            "description": "PRĂCE S KLIENTY"
+        },
+        "blog": {
+            "titlePart1": "ZkuĹˇenosti a",
+            "titlePart2Accent": "PĹ™Ă­stup",
+            "description": "ODBORNĂ‰ ÄŚLĂNKY"
+        },
+        "order": {
+            "titlePart1": "ZaÄŤĂ­t",
+            "titlePart2Accent": "SpoluprĂˇci",
+            "description": "VstupnĂ­ formulĂˇĹ™ a rezervace termĂ­nu trĂ©ninkĹŻ"
+        },
+        "aboutMe": {
+            "titlePart1": "Kdo je",
+            "titlePart2Accent": "Martin?",
+            "description": "MOJE CESTA"
+        }
+    }
+}

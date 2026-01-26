@@ -104,6 +104,10 @@ $headers[] = "Content-Type: text/plain; charset=UTF-8";
 $headers[] = "Content-Transfer-Encoding: 8bit";
 $headers[] = "X-Mailer: MartinStastnyWeb/1.0";
 $headers[] = "X-Originating-IP: {$_SERVER['REMOTE_ADDR']}";
+$headers[] = "X-Priority: 3"; // Normal priority
+$headers[] = "Importance: Normal";
+$headers[] = "List-Unsubscribe: <mailto:{$config['email']['from']}?subject=Unsubscribe>";
+$headers[] = "List-Unsubscribe-Post: List-Unsubscribe=One-Click";
 $headers[] = "Date: " . date('r');
 
 $headersString = implode("\r\n", $headers);
